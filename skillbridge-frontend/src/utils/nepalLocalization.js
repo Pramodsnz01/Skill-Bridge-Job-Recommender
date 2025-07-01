@@ -69,7 +69,7 @@ export const formatNepaliPhone = (phone) => {
   return phone;
 };
 
-// Nepal provinces data
+// Static Nepal provinces data
 export const nepalProvinces = [
   { value: 'province1', label: 'Province 1 (Koshi)' },
   { value: 'province2', label: 'Province 2 (Madhesh)' },
@@ -117,99 +117,36 @@ export const nepalDistricts = {
   ]
 };
 
-// Municipalities by district mapping
+// Municipalities by district (partial example, add more as needed)
 export const nepalMunicipalitiesByDistrict = {
-  // Province 1 (Koshi)
-  'Bhojpur': ['Bhojpur Municipality', 'Dingla Municipality'],
-  'Dhankuta': ['Dhankuta Municipality', 'Pakhribas Municipality'],
-  'Ilam': ['Ilam Municipality', 'Phidim Municipality'],
-  'Jhapa': ['Bhadrapur Municipality', 'Damak Municipality', 'Birtamod Municipality', 'Mechinagar Municipality'],
-  'Khotang': ['Diktel Municipality', 'Rupakot Municipality'],
-  'Morang': ['Biratnagar Metropolitan', 'Itahari Sub-Metropolitan', 'Dharan Sub-Metropolitan', 'Inaruwa Municipality', 'Biratchowk Municipality'],
-  'Okhaldhunga': ['Okhaldhunga Municipality', 'Salleri Municipality'],
-  'Panchthar': ['Phidim Municipality', 'Tumbewa Municipality'],
-  'Sankhuwasabha': ['Khandbari Municipality', 'Chainpur Municipality'],
-  'Solukhumbu': ['Salleri Municipality', 'Namche Bazaar Municipality'],
-  'Sunsari': ['Inaruwa Municipality', 'Itahari Sub-Metropolitan', 'Dharan Sub-Metropolitan'],
-  'Taplejung': ['Taplejung Municipality', 'Phungling Municipality'],
-  'Terhathum': ['Myanglung Municipality', 'Laligurans Municipality'],
-  'Udayapur': ['Gaighat Municipality', 'Katari Municipality'],
-
-  // Province 2 (Madhesh)
-  'Bara': ['Kalaiya Sub-Metropolitan', 'Jitpur Simara Sub-Metropolitan', 'Simraungadh Municipality'],
-  'Dhanusha': ['Janakpur Sub-Metropolitan', 'Dhanushadham Municipality'],
-  'Mahottari': ['Jaleshwar Municipality', 'Bardibas Municipality'],
-  'Parsa': ['Birgunj Metropolitan', 'Parsagadhi Municipality'],
-  'Rautahat': ['Gaur Municipality', 'Chandrapur Municipality'],
-  'Saptari': ['Rajbiraj Municipality', 'Hanumannagar Kankalini Municipality'],
-  'Sarlahi': ['Malangwa Municipality', 'Haripur Municipality'],
-  'Siraha': ['Siraha Municipality', 'Lahan Municipality'],
-
-  // Province 3 (Bagmati)
-  'Bhaktapur': ['Bhaktapur Municipality', 'Madhyapur Thimi Municipality'],
-  'Chitwan': ['Bharatpur Metropolitan', 'Ratnanagar Municipality', 'Narayangarh Municipality'],
-  'Dhading': ['Dhading Besi Municipality', 'Gajuri Municipality'],
-  'Dolakha': ['Charikot Municipality', 'Jiri Municipality'],
-  'Kavrepalanchok': ['Banepa Municipality', 'Panauti Municipality', 'Dhulikhel Municipality'],
-  'Kathmandu': ['Kathmandu Metropolitan', 'Kirtipur Municipality', 'Budhanilkantha Municipality'],
-  'Lalitpur': ['Lalitpur Metropolitan', 'Godawari Municipality'],
-  'Makwanpur': ['Hetauda Sub-Metropolitan', 'Thaha Municipality'],
-  'Nuwakot': ['Bidur Municipality', 'Kakani Municipality'],
-  'Ramechhap': ['Manthali Municipality', 'Ramechhap Municipality'],
-  'Rasuwa': ['Dhunche Municipality', 'Syabrubesi Municipality'],
-  'Sindhuli': ['Sindhulimadi Municipality', 'Kamalamai Municipality'],
-  'Sindhupalchok': ['Chautara Sangachokgadhi Municipality', 'Melamchi Municipality'],
-
-  // Province 4 (Gandaki)
-  'Baglung': ['Baglung Municipality', 'Galkot Municipality'],
-  'Gorkha': ['Gorkha Municipality', 'Prithbinarayan Municipality'],
-  'Kaski': ['Pokhara Metropolitan', 'Lekhnath Municipality'],
-  'Lamjung': ['Besisahar Municipality', 'Sundarbazar Municipality'],
-  'Manang': ['Chame Rural Municipality', 'Manang Ngisyang Rural Municipality'],
-  'Mustang': ['Jomsom Rural Municipality', 'Lo Manthang Rural Municipality'],
-  'Myagdi': ['Beni Municipality', 'Galeshwor Municipality'],
-  'Nawalpur': ['Kawasoti Municipality', 'Gaindakot Municipality'],
-  'Parbat': ['Kusma Municipality', 'Phalebas Municipality'],
-  'Syangja': ['Syangja Municipality', 'Putalibazar Municipality'],
-  'Tanahun': ['Damauli Municipality', 'Byas Municipality'],
-
-  // Province 5 (Lumbini)
-  'Arghakhanchi': ['Sandhikharka Municipality', 'Sitganga Municipality'],
-  'Banke': ['Nepalgunj Sub-Metropolitan', 'Kohalpur Municipality'],
-  'Bardiya': ['Gulariya Municipality', 'Rajapur Municipality'],
-  'Dang': ['Ghorahi Sub-Metropolitan', 'Tulsipur Sub-Metropolitan'],
-  'Eastern Rukum': ['Rukumkot Municipality', 'Chaurjahari Municipality'],
-  'Gulmi': ['Tamghas Municipality', 'Resunga Municipality'],
-  'Kapilvastu': ['Taulihawa Municipality', 'Buddhabhumi Municipality'],
-  'Palpa': ['Tansen Municipality', 'Rampur Municipality'],
-  'Parasi': ['Ramgram Municipality', 'Sunwal Municipality'],
-  'Pyuthan': ['Pyuthan Municipality', 'Swargadwari Municipality'],
-  'Rolpa': ['Liwang Municipality', 'Rolpa Municipality'],
-  'Rupandehi': ['Siddharthanagar Municipality', 'Butwal Sub-Metropolitan', 'Lumbini Sanskritik Municipality'],
-
-  // Province 6 (Karnali)
-  'Dailekh': ['Dailekh Municipality', 'Narayan Municipality'],
-  'Dolpa': ['Dunai Municipality', 'Dolpa Municipality'],
-  'Humla': ['Simikot Rural Municipality', 'Humla Rural Municipality'],
-  'Jajarkot': ['Khalanga Municipality', 'Jajarkot Municipality'],
-  'Jumla': ['Chandannath Municipality', 'Jumla Municipality'],
-  'Kalikot': ['Manma Municipality', 'Kalikot Municipality'],
-  'Mugu': ['Gamgadhi Municipality', 'Mugu Municipality'],
-  'Salyan': ['Salyan Municipality', 'Sharada Municipality'],
-  'Surkhet': ['Birendranagar Municipality', 'Surkhet Municipality'],
-  'Western Rukum': ['Musikot Municipality', 'Rukum Municipality'],
-
-  // Province 7 (Sudurpaschim)
-  'Achham': ['Mangalsen Municipality', 'Achham Municipality'],
-  'Baitadi': ['Dasharathchand Municipality', 'Baitadi Municipality'],
-  'Bajhang': ['Chainpur Municipality', 'Bajhang Municipality'],
-  'Bajura': ['Martadi Municipality', 'Bajura Municipality'],
-  'Dadeldhura': ['Amargadhi Municipality', 'Dadeldhura Municipality'],
-  'Darchula': ['Darchula Municipality', 'Darchula Rural Municipality'],
-  'Doti': ['Dipayal Municipality', 'Doti Municipality'],
-  'Kailali': ['Dhangadhi Sub-Metropolitan', 'Tikapur Municipality'],
-  'Kanchanpur': ['Bhimdatta Municipality', 'Krishnapur Municipality']
+  'Kathmandu': [
+    'Kathmandu Metropolitan City', 'Kirtipur Municipality', 'Budhanilkantha Municipality', 'Tokha Municipality', 'Gokarneshwor Municipality', 'Tarakeshwor Municipality', 'Nagarjun Municipality', 'Chandragiri Municipality', 'Shankharapur Municipality', 'Dakshinkali Municipality'
+  ],
+  'Lalitpur': [
+    'Lalitpur Metropolitan City', 'Godawari Municipality', 'Mahalaxmi Municipality', 'Konjyosom Rural Municipality', 'Bagmati Rural Municipality', 'Mahankal Rural Municipality'
+  ],
+  // ... add more districts and their municipalities as needed ...
 };
+
+// Helper: Get districts for a specific province
+export function getDistrictsByProvince(province) {
+  return nepalDistricts[province] || [];
+}
+
+// Helper: Get municipalities for a specific district
+export function getMunicipalitiesByDistrict(district) {
+  return nepalMunicipalitiesByDistrict[district] || [];
+}
+
+// Helper: Get all municipalities for a province
+export function getMunicipalitiesByProvince(province) {
+  const districts = getDistrictsByProvince(province);
+  let municipalities = [];
+  districts.forEach(d => {
+    municipalities = municipalities.concat(getMunicipalitiesByDistrict(d));
+  });
+  return municipalities;
+}
 
 // Date formatting for Nepal
 export const formatNepaliDate = (date, format = 'DD-MM-YYYY') => {
@@ -260,27 +197,6 @@ export const defaultNepalSettings = {
   currency: 'NPR',
   dateFormat: 'DD-MM-YYYY',
   timezone: 'Asia/Kathmandu'
-};
-
-// Get districts for a specific province
-export const getDistrictsByProvince = (province) => {
-  return nepalDistricts[province] || [];
-};
-
-// Get municipalities for a specific district
-export const getMunicipalitiesByDistrict = (district) => {
-  return nepalMunicipalitiesByDistrict[district] || [];
-};
-
-// Get municipalities for a specific province (all municipalities in that province)
-export const getMunicipalitiesByProvince = (province) => {
-  const districts = getDistrictsByProvince(province);
-  const municipalities = [];
-  districts.forEach(district => {
-    const districtMunicipalities = getMunicipalitiesByDistrict(district);
-    municipalities.push(...districtMunicipalities);
-  });
-  return [...new Set(municipalities)]; // Remove duplicates
 };
 
 // Format currency input for display

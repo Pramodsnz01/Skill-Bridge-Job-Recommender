@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import NepalFormField from '../components/ui/NepalFormField';
-import { validateNepaliPhone, fetchProvinces, fetchDistrictsByProvince, fetchMunicipalitiesByDistrict } from '../utils/nepalLocalization';
+import { validateNepaliPhone, nepalProvinces, getDistrictsByProvince, getMunicipalitiesByDistrict } from '../utils/nepalLocalization';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,38 +22,20 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
 
-  // Dynamic location data
-  const [provinces, setProvinces] = useState([]);
+  // Static location data
   const [districts, setDistricts] = useState([]);
   const [municipalities, setMunicipalities] = useState([]);
-  const [loadingProvinces, setLoadingProvinces] = useState(false);
-  const [loadingDistricts, setLoadingDistricts] = useState(false);
-  const [loadingMunicipalities, setLoadingMunicipalities] = useState(false);
-  const [locationError, setLocationError] = useState('');
 
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  // Fetch provinces on mount
-  useEffect(() => {
-    setLoadingProvinces(true);
-    fetchProvinces()
-      .then(data => setProvinces(data))
-      .catch(() => setLocationError('Failed to load provinces'))
-      .finally(() => setLoadingProvinces(false));
-  }, []);
-
-  // Fetch districts when province changes
+  // Update districts and municipalities when province changes
   useEffect(() => {
     if (formData.province) {
-      setLoadingDistricts(true);
-      setDistricts([]);
+      const provinceDistricts = getDistrictsByProvince(formData.province);
+      setDistricts(provinceDistricts);
       setMunicipalities([]);
       setFormData(prev => ({ ...prev, district: '', municipality: '' }));
-      fetchDistrictsByProvince(formData.province)
-        .then(data => setDistricts(data))
-        .catch(() => setLocationError('Failed to load districts'))
-        .finally(() => setLoadingDistricts(false));
     } else {
       setDistricts([]);
       setMunicipalities([]);
@@ -61,16 +43,12 @@ const Register = () => {
     }
   }, [formData.province]);
 
-  // Fetch municipalities when district changes
+  // Update municipalities when district changes
   useEffect(() => {
     if (formData.district) {
-      setLoadingMunicipalities(true);
-      setMunicipalities([]);
+      const districtMunicipalities = getMunicipalitiesByDistrict(formData.district);
+      setMunicipalities(districtMunicipalities);
       setFormData(prev => ({ ...prev, municipality: '' }));
-      fetchMunicipalitiesByDistrict(formData.district)
-        .then(data => setMunicipalities(data))
-        .catch(() => setLocationError('Failed to load municipalities'))
-        .finally(() => setLoadingMunicipalities(false));
     } else {
       setMunicipalities([]);
       setFormData(prev => ({ ...prev, municipality: '' }));
@@ -83,20 +61,14 @@ const Register = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }));
     }
-    // Clear API error when user starts typing
     if (apiError) {
       setApiError('');
-    }
-    // Clear location error
-    if (locationError) {
-      setLocationError('');
     }
   };
 
@@ -125,7 +97,6 @@ const Register = () => {
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    // Phone validation - make it required and validate format
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!validateNepaliPhone(formData.phone)) {
@@ -204,11 +175,6 @@ const Register = () => {
           {apiError && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <p className="text-sm text-red-600 dark:text-red-400">{apiError}</p>
-            </div>
-          )}
-          {locationError && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-              <p className="text-sm text-yellow-700 dark:text-yellow-400">{locationError}</p>
             </div>
           )}
           <div className="space-y-6">
@@ -308,9 +274,8 @@ const Register = () => {
                 onChange={handleChange}
                 error={errors.province}
                 required
-                disabled={isLoading || loadingProvinces}
-                options={provinces.map(p => ({ value: p, label: p.charAt(0).toUpperCase() + p.slice(1).replace(/-/g, ' ') }))}
-                loading={loadingProvinces}
+                disabled={isLoading}
+                options={nepalProvinces.map(p => ({ value: p.value, label: p.label }))}
               />
               <NepalFormField
                 type="district"
@@ -320,9 +285,8 @@ const Register = () => {
                 onChange={handleChange}
                 error={errors.district}
                 required
-                disabled={isLoading || !formData.province || loadingDistricts}
-                options={districts.map(d => ({ value: d, label: d.charAt(0).toUpperCase() + d.slice(1).replace(/-/g, ' ') }))}
-                loading={loadingDistricts}
+                disabled={isLoading || !formData.province}
+                options={districts.map(d => ({ value: d, label: d }))}
               />
               <NepalFormField
                 type="municipality"
@@ -332,9 +296,8 @@ const Register = () => {
                 onChange={handleChange}
                 error={errors.municipality}
                 required
-                disabled={isLoading || !formData.district || loadingMunicipalities}
-                options={municipalities.map(m => ({ value: m, label: m.charAt(0).toUpperCase() + m.slice(1) }))}
-                loading={loadingMunicipalities}
+                disabled={isLoading || !formData.district}
+                options={municipalities.map(m => ({ value: m, label: m }))}
               />
             </div>
           </div>
