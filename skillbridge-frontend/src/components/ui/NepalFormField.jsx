@@ -4,8 +4,6 @@ import {
   formatNepaliPhone, 
   nepalProvinces, 
   getDistrictsByProvince,
-  getMunicipalitiesByDistrict,
-  getMunicipalitiesByProvince,
   formatToNepaliRupees,
   formatCurrencyInput,
   parseCurrencyInput
@@ -21,16 +19,22 @@ const NepalFormField = ({
   required = false,
   placeholder,
   className = '',
-  options = [],
-  loading = false,
+  districts: propDistricts,
   ...props 
 }) => {
   const [localValue, setLocalValue] = useState(value || '');
   const [isValid, setIsValid] = useState(true);
+  const [districts, setDistricts] = useState([]);
 
   useEffect(() => {
     setLocalValue(value || '');
   }, [value]);
+
+  useEffect(() => {
+    if (name === 'province' && localValue) {
+      setDistricts(getDistrictsByProvince(localValue));
+    }
+  }, [localValue, name]);
 
   const handleChange = (e) => {
     let newValue = e.target.value;
@@ -95,8 +99,10 @@ const NepalFormField = ({
             value={localValue}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder={placeholder || "Enter phone number"}
-            className={`w-full px-3 py-2 border ${isValid ? 'border-gray-300 dark:border-gray-600' : 'border-red-500'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}
+            placeholder="98xxxxxxxx"
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 ${
+              !isValid ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
             {...props}
           />
         );
@@ -104,7 +110,7 @@ const NepalFormField = ({
       case 'currency':
         return (
           <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
+            <span className="absolute left-3 top-2 text-gray-500 dark:text-gray-400">
               Rs.
             </span>
             <input
@@ -112,40 +118,49 @@ const NepalFormField = ({
               name={name}
               value={localValue}
               onChange={handleChange}
-              placeholder={placeholder || "0.00"}
-              className={`w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}
+              placeholder="0.00"
+              className="w-full pl-12 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               {...props}
             />
           </div>
         );
 
       case 'province':
-      case 'district':
-      case 'municipality':
         return (
-          <div className="relative">
-            <select
-              name={name}
-              value={localValue}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-              disabled={props.disabled || loading || !options.length}
-              {...props}
-            >
-              <option value="">Select {label}</option>
-              {options.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
-            {loading && (
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <svg className="animate-spin h-4 w-4 text-blue-500" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v2a6 6 0 100 12v2a8 8 0 01-8-8z" />
-                </svg>
-              </div>
-            )}
-          </div>
+          <select
+            name={name}
+            value={localValue}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            {...props}
+          >
+            <option value="">Select Province</option>
+            {nepalProvinces.map(province => (
+              <option key={province.value} value={province.value}>
+                {province.label}
+              </option>
+            ))}
+          </select>
+        );
+
+      case 'district':
+        const districtOptions = propDistricts && propDistricts.length ? propDistricts : districts;
+        return (
+          <select
+            name={name}
+            value={localValue}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            disabled={!districtOptions.length}
+            {...props}
+          >
+            <option value="">Select District</option>
+            {districtOptions.map(district => (
+              <option key={district} value={district}>
+                {district}
+              </option>
+            ))}
+          </select>
         );
 
       case 'textarea':
@@ -169,7 +184,7 @@ const NepalFormField = ({
             value={localValue}
             onChange={handleChange}
             placeholder={placeholder}
-            className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white ${className}`}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             {...props}
           />
         );
@@ -177,22 +192,28 @@ const NepalFormField = ({
   };
 
   return (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+    <div className={`mb-4 ${className}`}>
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
+      
       {renderField()}
+      
       {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-      )}
-      {type === 'phone' && localValue && !isValid && (
-        <p className="text-sm text-yellow-600 dark:text-yellow-400">
-          Please enter a valid Nepali phone number
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+          {error}
         </p>
       )}
+      
+      {type === 'phone' && !isValid && localValue && (
+        <p className="mt-1 text-sm text-yellow-600 dark:text-yellow-400">
+          Please enter a valid Nepali phone number (e.g., 98xxxxxxxx)
+        </p>
+      )}
+      
       {type === 'currency' && localValue && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Formatted: {formatToNepaliRupees(parseCurrencyInput(localValue))}
         </p>
       )}

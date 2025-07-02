@@ -69,7 +69,7 @@ export const formatNepaliPhone = (phone) => {
   return phone;
 };
 
-// Static Nepal provinces data
+// Nepal provinces data
 export const nepalProvinces = [
   { value: 'province1', label: 'Province 1 (Koshi)' },
   { value: 'province2', label: 'Province 2 (Madhesh)' },
@@ -79,74 +79,6 @@ export const nepalProvinces = [
   { value: 'province6', label: 'Province 6 (Karnali)' },
   { value: 'province7', label: 'Province 7 (Sudurpaschim)' }
 ];
-
-// Major cities in Nepal
-export const nepalCities = [
-  'Kathmandu', 'Pokhara', 'Lalitpur', 'Bharatpur', 'Biratnagar', 'Birgunj',
-  'Dharan', 'Butwal', 'Dhangadhi', 'Nepalgunj', 'Itahari', 'Hetauda',
-  'Janakpur', 'Dhankuta', 'Tansen', 'Damak', 'Dharan', 'Ghorahi',
-  'Tikapur', 'Kirtipur', 'Tulsipur', 'Bhadrapur', 'Rajbiraj', 'Lahan',
-  'Gulariya', 'Siddharthanagar', 'Birendranagar', 'Madhyapur Thimi',
-  'Bhimdatta', 'Lekhnath', 'Kirtipur', 'Ratnanagar', 'Buddhabhumi',
-  'Gaur', 'Siraha', 'Lamahi', 'Tansen', 'Malangwa', 'Banepa',
-  'Rajbiraj', 'Panauti', 'Gaur', 'Tikapur', 'Kirtipur', 'Ratnanagar'
-];
-
-// Districts by province
-export const nepalDistricts = {
-  province1: [
-    'Bhojpur', 'Dhankuta', 'Ilam', 'Jhapa', 'Khotang', 'Morang', 'Okhaldhunga', 'Panchthar', 'Sankhuwasabha', 'Solukhumbu', 'Sunsari', 'Taplejung', 'Terhathum', 'Udayapur'
-  ],
-  province2: [
-    'Bara', 'Dhanusha', 'Mahottari', 'Parsa', 'Rautahat', 'Saptari', 'Sarlahi', 'Siraha'
-  ],
-  province3: [
-    'Bhaktapur', 'Chitwan', 'Dhading', 'Dolakha', 'Kavrepalanchok', 'Kathmandu', 'Lalitpur', 'Makwanpur', 'Nuwakot', 'Ramechhap', 'Rasuwa', 'Sindhuli', 'Sindhupalchok'
-  ],
-  province4: [
-    'Baglung', 'Gorkha', 'Kaski', 'Lamjung', 'Manang', 'Mustang', 'Myagdi', 'Nawalpur', 'Parbat', 'Syangja', 'Tanahun'
-  ],
-  province5: [
-    'Arghakhanchi', 'Banke', 'Bardiya', 'Dang', 'Eastern Rukum', 'Gulmi', 'Kapilvastu', 'Palpa', 'Parasi', 'Pyuthan', 'Rolpa', 'Rupandehi'
-  ],
-  province6: [
-    'Dailekh', 'Dolpa', 'Humla', 'Jajarkot', 'Jumla', 'Kalikot', 'Mugu', 'Salyan', 'Surkhet', 'Western Rukum'
-  ],
-  province7: [
-    'Achham', 'Baitadi', 'Bajhang', 'Bajura', 'Dadeldhura', 'Darchula', 'Doti', 'Kailali', 'Kanchanpur'
-  ]
-};
-
-// Municipalities by district (partial example, add more as needed)
-export const nepalMunicipalitiesByDistrict = {
-  'Kathmandu': [
-    'Kathmandu Metropolitan City', 'Kirtipur Municipality', 'Budhanilkantha Municipality', 'Tokha Municipality', 'Gokarneshwor Municipality', 'Tarakeshwor Municipality', 'Nagarjun Municipality', 'Chandragiri Municipality', 'Shankharapur Municipality', 'Dakshinkali Municipality'
-  ],
-  'Lalitpur': [
-    'Lalitpur Metropolitan City', 'Godawari Municipality', 'Mahalaxmi Municipality', 'Konjyosom Rural Municipality', 'Bagmati Rural Municipality', 'Mahankal Rural Municipality'
-  ],
-  // ... add more districts and their municipalities as needed ...
-};
-
-// Helper: Get districts for a specific province
-export function getDistrictsByProvince(province) {
-  return nepalDistricts[province] || [];
-}
-
-// Helper: Get municipalities for a specific district
-export function getMunicipalitiesByDistrict(district) {
-  return nepalMunicipalitiesByDistrict[district] || [];
-}
-
-// Helper: Get all municipalities for a province
-export function getMunicipalitiesByProvince(province) {
-  const districts = getDistrictsByProvince(province);
-  let municipalities = [];
-  districts.forEach(d => {
-    municipalities = municipalities.concat(getMunicipalitiesByDistrict(d));
-  });
-  return municipalities;
-}
 
 // Date formatting for Nepal
 export const formatNepaliDate = (date, format = 'DD-MM-YYYY') => {
@@ -199,6 +131,36 @@ export const defaultNepalSettings = {
   timezone: 'Asia/Kathmandu'
 };
 
+// Add back the nepalDistricts mapping for province to districts
+export const nepalDistricts = {
+  province1: [
+    'Bhojpur', 'Dhankuta', 'Ilam', 'Jhapa', 'Khotang', 'Morang', 'Okhaldhunga', 'Panchthar', 'Sankhuwasabha', 'Solukhumbu', 'Sunsari', 'Taplejung', 'Terhathum', 'Udayapur'
+  ],
+  province2: [
+    'Bara', 'Dhanusha', 'Mahottari', 'Parsa', 'Rautahat', 'Saptari', 'Sarlahi', 'Siraha'
+  ],
+  province3: [
+    'Bhaktapur', 'Chitwan', 'Dhading', 'Dolakha', 'Kavrepalanchok', 'Kathmandu', 'Lalitpur', 'Makwanpur', 'Nuwakot', 'Ramechhap', 'Rasuwa', 'Sindhuli', 'Sindhupalchok'
+  ],
+  province4: [
+    'Baglung', 'Gorkha', 'Kaski', 'Lamjung', 'Manang', 'Mustang', 'Myagdi', 'Nawalpur', 'Parbat', 'Syangja', 'Tanahun'
+  ],
+  province5: [
+    'Arghakhanchi', 'Banke', 'Bardiya', 'Dang', 'Eastern Rukum', 'Gulmi', 'Kapilvastu', 'Palpa', 'Parasi', 'Pyuthan', 'Rolpa', 'Rupandehi'
+  ],
+  province6: [
+    'Dailekh', 'Dolpa', 'Humla', 'Jajarkot', 'Jumla', 'Kalikot', 'Mugu', 'Salyan', 'Surkhet', 'Western Rukum'
+  ],
+  province7: [
+    'Achham', 'Baitadi', 'Bajhang', 'Bajura', 'Dadeldhura', 'Darchula', 'Doti', 'Kailali', 'Kanchanpur'
+  ]
+};
+
+// Get districts for a specific province
+export const getDistrictsByProvince = (province) => {
+  return nepalDistricts[province] || [];
+};
+
 // Format currency input for display
 export const formatCurrencyInput = (value) => {
   if (!value) return '';
@@ -232,50 +194,17 @@ export const nepalFormatters = {
   parseCurrency: parseCurrencyInput
 };
 
-// Nepal Address API Endpoints
-export const BASE_API = 'https://nepaliaddress.up.railway.app';
-
-// Fetch all provinces
-export async function fetchProvinces() {
-  const res = await fetch(`${BASE_API}/provinces`);
-  if (!res.ok) throw new Error('Failed to fetch provinces');
-  const data = await res.json();
-  // API returns { provinces: [ ... ] }
-  return data.provinces || [];
-}
-
-// Fetch districts by province name
-export async function fetchDistrictsByProvince(province) {
-  const res = await fetch(`${BASE_API}/districts/${province}`);
-  if (!res.ok) throw new Error('Failed to fetch districts');
-  const data = await res.json();
-  // API returns { districts: [ ... ] }
-  return data.districts || [];
-}
-
-// Fetch municipalities by district name
-export async function fetchMunicipalitiesByDistrict(district) {
-  const res = await fetch(`${BASE_API}/municipals/${district}`);
-  if (!res.ok) throw new Error('Failed to fetch municipalities');
-  const data = await res.json();
-  // API returns { municipals: [ ... ] }
-  return data.municipals || [];
-}
-
 export default {
   formatToNepaliRupees,
   convertUSDToNPR,
   validateNepaliPhone,
   formatNepaliPhone,
   nepalProvinces,
-  nepalCities,
   nepalDistricts,
   formatNepaliDate,
   getCurrentNepaliDate,
   nepalValidationRules,
   defaultNepalSettings,
   getDistrictsByProvince,
-  getMunicipalitiesByDistrict,
-  getMunicipalitiesByProvince,
   nepalFormatters
 }; 
