@@ -19,40 +19,102 @@ const createAuthInstance = () => {
     });
 };
 
-// Get dashboard analytics
+// MOCK DATA FOR DEMO PURPOSES
+
+// 1. Dashboard Analytics
 export const getDashboardAnalytics = async (period = '30d') => {
-    try {
-        const authInstance = createAuthInstance();
-        const response = await authInstance.get(`/dashboard/analytics?period=${period}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching dashboard analytics:', error);
-        throw error;
-    }
+    return {
+        data: {
+            overview: {
+                totalAnalyses: 5,
+                period,
+                startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                endDate: new Date()
+            },
+            analysesByWeek: [
+                { week: '2024-W22', count: 1 },
+                { week: '2024-W23', count: 2 },
+                { week: '2024-W24', count: 1 },
+                { week: '2024-W25', count: 1 }
+            ],
+            skillsDistribution: [
+                { category: 'Programming', count: 4 },
+                { category: 'Communication', count: 2 },
+                { category: 'Leadership', count: 1 }
+            ],
+            skillGaps: [
+                { skill: 'React', domain: 'Web', priority: 'High', frequency: 2, marketDemand: 8.5 },
+                { skill: 'Node.js', domain: 'Backend', priority: 'Medium', frequency: 1, marketDemand: 7.2 }
+            ],
+            careerDomains: [
+                { domain: 'Software', count: 3 },
+                { domain: 'Management', count: 2 }
+            ],
+            experienceTrends: [
+                { year: 2022, avg: 1 },
+                { year: 2023, avg: 2 },
+                { year: 2024, avg: 2.5 }
+            ]
+        }
+    };
 };
 
-// Get recent analyses
+// 2. Recent Analyses
 export const getRecentAnalyses = async (limit = 5) => {
-    try {
-        const authInstance = createAuthInstance();
-        const response = await authInstance.get(`/dashboard/recent-analyses?limit=${limit}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching recent analyses:', error);
-        throw error;
-    }
+    return {
+        data: [
+            {
+                _id: '1',
+                analysis: {
+                    _id: '1',
+                    resume: { originalName: 'Resume_JohnDoe.pdf' },
+                    status: 'completed'
+                },
+                analysisDate: new Date().toISOString(),
+                analysisMetrics: { totalSkillsFound: 5, totalGapsIdentified: 2 }
+            },
+            {
+                _id: '2',
+                analysis: {
+                    _id: '2',
+                    resume: { originalName: 'Resume_JaneSmith.pdf' },
+                    status: 'completed'
+                },
+                analysisDate: new Date(Date.now() - 86400000).toISOString(),
+                analysisMetrics: { totalSkillsFound: 3, totalGapsIdentified: 1 }
+            }
+        ]
+    };
 };
 
-// Get user statistics summary
+// 3. User Stats
 export const getUserStats = async () => {
-    try {
-        const authInstance = createAuthInstance();
-        const response = await authInstance.get('/dashboard/user-stats');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user stats:', error);
-        throw error;
-    }
+    return {
+        data: {
+            averageExperience: 2,
+            profileCompletion: 80
+        }
+    };
+};
+
+// 4. Skills Summary
+export const getSkillsSummary = async () => {
+    return {
+        data: {
+            totalSkills: 7,
+            topSkills: ['JavaScript', 'React', 'Node.js']
+        }
+    };
+};
+
+// 5. Career Domains Summary
+export const getCareerDomainsSummary = async () => {
+    return {
+        data: {
+            totalDomains: 2,
+            domains: ['Software', 'Management']
+        }
+    };
 };
 
 // Get analysis history
@@ -63,30 +125,6 @@ export const getAnalysisHistory = async (page = 1, limit = 10) => {
         return response.data;
     } catch (error) {
         console.error('Error fetching analysis history:', error);
-        throw error;
-    }
-};
-
-// Get skills summary
-export const getSkillsSummary = async () => {
-    try {
-        const authInstance = createAuthInstance();
-        const response = await authInstance.get('/dashboard/skills-summary');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching skills summary:', error);
-        throw error;
-    }
-};
-
-// Get career domains summary
-export const getCareerDomainsSummary = async () => {
-    try {
-        const authInstance = createAuthInstance();
-        const response = await authInstance.get('/dashboard/career-domains-summary');
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching career domains summary:', error);
         throw error;
     }
 };
