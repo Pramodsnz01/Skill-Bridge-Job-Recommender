@@ -7,7 +7,8 @@ const {
   getSkillsSummary, 
   getCareerDomainsSummary, 
   deleteAnalysis, 
-  exportAnalysisPDF 
+  exportAnalysisPDF, 
+  debugListAnalysesForUser 
 } = require('../controllers/dashboardController');
 
 const router = express.Router();
@@ -32,5 +33,8 @@ router.delete('/analysis/:analysisId', auth, deleteAnalysis);
 
 // Export analysis as PDF
 router.get('/export-analysis/:analysisId', auth, exportAnalysisPDF);
+
+// TEMPORARY DEBUG ENDPOINT
+router.get('/debug/analyses', auth, debugListAnalysesForUser);
 
 module.exports = router; 

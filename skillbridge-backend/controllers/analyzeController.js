@@ -154,6 +154,8 @@ const analyzeResume = async (req, res) => {
             });
         } catch (extractError) {
             console.error(`❌ [${requestId}] Text extraction failed:`, extractError);
+            // Improved logging for failed analysis
+            console.error(`🛑 [${requestId}] Analysis failed (text extraction) for resume: ${id}, user: ${req.user._id}, error: ${extractError.message}`);
             
             // Provide user-friendly error messages
             let userMessage = 'Failed to extract text from resume.';
@@ -233,6 +235,8 @@ const analyzeResume = async (req, res) => {
                 response: apiError.response?.data,
                 status: apiError.response?.status
             });
+            // Improved logging for failed analysis
+            console.error(`🛑 [${requestId}] Analysis failed (Python API) for resume: ${id}, user: ${req.user._id}, error: ${apiError.message}`);
             
             let errorMessage = 'Analysis service unavailable';
             if (apiError.code === 'ECONNABORTED') {
@@ -290,7 +294,9 @@ const analyzeResume = async (req, res) => {
                     totalGapsIdentified: analysis.analysisSummary.gapsIdentified,
                     processingTime: analysis.processingTime,
                     confidenceScore: 0.8
-                }
+                },
+                status: 'active',
+                analysisDate: new Date()
             });
             
             await analysisHistory.save();
@@ -323,6 +329,8 @@ const analyzeResume = async (req, res) => {
 
     } catch (error) {
         console.error(`❌ [${requestId}] Analyze resume error:`, error);
+        // Improved logging for failed analysis
+        console.error(`🛑 [${requestId}] Analysis failed (catch-all) for resume: ${req.params.id}, user: ${req.user?._id}, error: ${error.message}`);
         
         // Try to update analysis record if it exists
         try {
@@ -502,8 +510,25 @@ const getExperienceLevel = (years) => {
     return 'Principal';
 };
 
+// TEMPORARY DEBUG ENDPOINT: List all analyses for a resume
+// GET /api/analyze/debug/:resumeId
+const debugListAnalysesForResume = async (req, res) => {
+    try {
+        const { resumeId } = req.params;
+        const analyses = await Analysis.find({ resume: resumeId });
+        res.json({
+            success: true,
+            count: analyses.length,
+            analyses
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
 module.exports = {
     analyzeResume,
     getAnalysis,
     getAnalysisByResumeId,
+    debugListAnalysesForResume,
 }; 

@@ -16,10 +16,12 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
 } from 'recharts';
+import { useDashboardRefresh } from '../context/DashboardRefreshContext';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { refreshFlag } = useDashboardRefresh();
   
   // State management
   const [loading, setLoading] = useState(true);
@@ -42,6 +44,21 @@ const Dashboard = () => {
   // Color palette for charts
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658'];
 
+  // Transform skill gaps for chart
+  const getSkillGapsByPriorityData = (skillGaps) => {
+    if (!Array.isArray(skillGaps)) return [];
+    const grouped = {};
+    skillGaps.forEach(gap => {
+      const cat = gap.category || 'Unknown';
+      if (!grouped[cat]) grouped[cat] = { category: cat, high: 0, medium: 0, low: 0 };
+      const priority = (gap.priority || '').toLowerCase();
+      if (priority === 'high') grouped[cat].high += gap.frequency || 1;
+      else if (priority === 'medium') grouped[cat].medium += gap.frequency || 1;
+      else if (priority === 'low') grouped[cat].low += gap.frequency || 1;
+    });
+    return Object.values(grouped);
+  };
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -49,7 +66,7 @@ const Dashboard = () => {
     }
     
     fetchDashboardData();
-  }, [user, period]);
+  }, [user, period, refreshFlag]);
 
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
@@ -99,6 +116,8 @@ const Dashboard = () => {
       if (careerDomainsResponse.status === 'fulfilled') {
         setCareerDomains(careerDomainsResponse.value.data);
       }
+
+      console.log('Skill Gaps:', analytics?.skillGaps);
 
     } catch (err) {
       console.error('Dashboard data fetch error:', err);
@@ -388,6 +407,62 @@ const Dashboard = () => {
               </div>
             )}
 
+            {/* Skill Gaps by Priority */}
+            {analytics.skillGaps && analytics.skillGaps.length > 0 && (
+              <div className="card">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Priority</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={getSkillGapsByPriorityData(analytics.skillGaps)}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
+                    <XAxis 
+                      dataKey="category" 
+                      stroke="#6b7280" 
+                      className="dark:stroke-gray-400"
+                      tick={{ fill: '#6b7280' }}
+                    />
+                    <YAxis 
+                      stroke="#6b7280" 
+                      className="dark:stroke-gray-400"
+                      tick={{ fill: '#6b7280' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        color: '#374151'
+                      }}
+                      className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="high" 
+                      stackId="1" 
+                      stroke="#ef4444" 
+                      fill="#ef4444" 
+                      fillOpacity={0.6}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="medium" 
+                      stackId="1" 
+                      stroke="#f59e0b" 
+                      fill="#f59e0b" 
+                      fillOpacity={0.6}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="low" 
+                      stackId="1" 
+                      stroke="#10b981" 
+                      fill="#10b981" 
+                      fillOpacity={0.6}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
             {/* Skills Distribution */}
             {analytics.skillsDistribution && analytics.skillsDistribution.length > 0 && (
               <div className="card">
@@ -489,25 +564,6 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </Link>
-
-                <Link
-                  to="/analytics"
-                  className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-orange-300 dark:hover:border-orange-600 hover:shadow-md dark:hover:shadow-gray-800/50 transition-all duration-300 transform hover:scale-105"
-                >
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white text-lg">
-                      📈
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
-                        Detailed Analytics
-                      </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                        View comprehensive insights
-                      </p>
-                    </div>
-                  </div>
-                </Link>
               </div>
             </div>
           </div>
@@ -519,12 +575,6 @@ const Dashboard = () => {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300">
                   Recent Analyses
                 </h3>
-                <Link
-                  to="/analytics"
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 transition-colors duration-300"
-                >
-                  View All →
-                </Link>
               </div>
               
               {recentAnalyses.length === 0 ? (
@@ -576,13 +626,6 @@ const Dashboard = () => {
                       </div>
                       
                       <div className="flex-shrink-0 flex space-x-2">
-                        <Link
-                          to={`/results/${analysis.analysis?._id}`}
-                          className="btn-sm btn-primary"
-                        >
-                          View
-                        </Link>
-                        
                         <button
                           onClick={() => handleExportAnalysis(analysis.analysis?._id)}
                           disabled={exportingAnalysis === analysis.analysis?._id}

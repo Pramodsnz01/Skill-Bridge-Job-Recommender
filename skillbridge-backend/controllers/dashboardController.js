@@ -53,22 +53,90 @@ const getDashboardAnalytics = async (req, res) => {
         // 6. Experience level trends
         const experienceTrends = await getExperienceTrends(userId, startDate);
 
+        // --- NEW: Aggregate real skill gaps from populated analyses ---
+        let realSkillGaps = [];
+        for (const hist of analysisHistory) {
+            if (hist.analysis && Array.isArray(hist.analysis.learningGaps)) {
+                for (const gap of hist.analysis.learningGaps) {
+                    // For each missing skill in the gap, add an entry
+                    if (Array.isArray(gap.missingSkills)) {
+                        for (const skill of gap.missingSkills) {
+                            realSkillGaps.push({
+                                skill: skill,
+                                domain: gap.domain || '',
+                                priority: gap.priority || 'Medium',
+                                frequency: 1
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        // Group by skill and priority
+        const groupedSkillGaps = {};
+        for (const gap of realSkillGaps) {
+            const key = `${gap.skill}|${gap.priority}`;
+            if (!groupedSkillGaps[key]) {
+                groupedSkillGaps[key] = { ...gap };
+            } else {
+                groupedSkillGaps[key].frequency += 1;
+            }
+        }
+        const mappedSkillGaps = Object.values(groupedSkillGaps);
+        // --- END NEW ---
+
+        // Map backend fields to frontend expectations
+        // 1. Map analysesByWeek to analysisTrend (convert week/count to date/analyses)
+        const analysisTrend = analysesByWeek.map(item => ({
+            date: item.week,
+            analyses: item.count
+        }));
+
+        // 2. Map skillsDistribution to include 'name' property
+        const mappedSkillsDistribution = (skillsDistribution || []).map(item => ({
+            name: item.category || '',
+            count: item.count || 0,
+            skills: item.skills || []
+        }));
+
+        // 3. Map careerDomains to include 'name' property
+        const mappedCareerDomains = (careerDomains || []).map(item => ({
+            name: item.domain || '',
+            count: item.frequency || 0,
+            confidence: item.confidence || 0
+        }));
+
+        // 4. Map skillGaps to include category, priority, description
+        const mappedSkillGapsForFrontend = (mappedSkillGaps || []).map(item => ({
+            category: item.skill || '',
+            priority: item.priority || '',
+            description: '', // No description in backend, leave empty
+            frequency: item.frequency || 0,
+            domain: item.domain || '',
+            marketDemand: item.marketDemand || 0
+        }));
+
+        // Guarantee skillGaps is always an array
+        const safeSkillGaps = Array.isArray(mappedSkillGapsForFrontend) ? mappedSkillGapsForFrontend : [];
+
+        const analyticsData = {
+            overview: {
+                totalAnalyses,
+                period,
+                startDate,
+                endDate: now
+            },
+            analysisTrend,
+            skillsDistribution: mappedSkillsDistribution,
+            careerDomains: mappedCareerDomains,
+            skillGaps: safeSkillGaps,
+            learningProgress,
+            experienceTrends
+        };
+        console.log('Outgoing analytics data:', JSON.stringify(analyticsData, null, 2));
         res.json({
             success: true,
-            data: {
-                overview: {
-                    totalAnalyses,
-                    period,
-                    startDate,
-                    endDate: now
-                },
-                analysesByWeek,
-                skillGaps,
-                learningProgress,
-                skillsDistribution,
-                careerDomains,
-                experienceTrends
-            }
+            data: analyticsData
         });
 
     } catch (error) {
@@ -298,9 +366,13 @@ const getExperienceTrends = async (userId, startDate) => {
         trend.mostCommonLevel.forEach(level => {
             levelCounts[level] = (levelCounts[level] || 0) + 1;
         });
-        const mostCommon = Object.keys(levelCounts).reduce((a, b) => 
-            levelCounts[a] > levelCounts[b] ? a : b
-        );
+        const levelKeys = Object.keys(levelCounts);
+        let mostCommon = '';
+        if (levelKeys.length > 0) {
+            mostCommon = levelKeys.reduce((a, b) =>
+                levelCounts[a] > levelCounts[b] ? a : b
+            );
+        }
 
         return {
             period: `${trend._id.year}-${trend._id.month.toString().padStart(2, '0')}`,
@@ -596,6 +668,21 @@ Career Domains: ${analysisHistory.analysis?.predictedCareerDomains?.join(', ') |
     }
 };
 
+// TEMPORARY DEBUG ENDPOINT: List all analyses for the current user
+const debugListAnalysesForUser = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const analyses = await Analysis.find({ user: userId }).sort({ createdAt: -1 });
+        res.json({
+            success: true,
+            count: analyses.length,
+            analyses
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
 module.exports = {
     getDashboardAnalytics,
     getRecentAnalyses,
@@ -603,5 +690,6 @@ module.exports = {
     getSkillsSummary,
     getCareerDomainsSummary,
     deleteAnalysis,
-    exportAnalysisPDF
+    exportAnalysisPDF,
+    debugListAnalysesForUser
 }; 

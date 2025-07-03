@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getAnalysis } from '../services/analyzeService';
+import { getAnalysis, pollAnalysisCompletion } from '../services/analyzeService';
 import { useAuth } from '../context/AuthContext';
 import SkillAnalysisCard from '../components/results/SkillAnalysisCard';
 import CareerRecommendationsCard from '../components/results/CareerRecommendationsCard';
@@ -58,6 +58,19 @@ const Results = () => {
         const analysisData = response.data || response;
         console.log('📊 Processed analysis data:', analysisData);
         setAnalysis(analysisData);
+        // If processing, start polling
+        if (analysisData.status === 'processing') {
+          setError('');
+          setLoading(true);
+          try {
+            const result = await pollAnalysisCompletion(resumeId, 3000, 40);
+            setAnalysis(result.data);
+            setLoading(false);
+          } catch (pollError) {
+            setError(pollError.message || 'Analysis failed.');
+            setLoading(false);
+          }
+        }
       } catch (err) {
         console.error('❌ Error fetching analysis:', err);
         
@@ -91,13 +104,13 @@ const Results = () => {
     );
   }
 
-  // Show loading while fetching data
-  if (loading) {
+  // Show loading while fetching data or processing
+  if (loading || (analysis && analysis.status === 'processing')) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading analysis...</p>
+          <p className="text-gray-600 dark:text-gray-400">{analysis && analysis.status === 'processing' ? 'Your resume is being analyzed. This may take a moment...' : 'Loading analysis...'}</p>
         </div>
       </div>
     );

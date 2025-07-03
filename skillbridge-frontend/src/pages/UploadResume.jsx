@@ -4,6 +4,7 @@ import { resumeService } from '../services/resumeService';
 import { analyzeResumeWithProgress } from '../services/analyzeService';
 import { useAuth } from '../context/AuthContext';
 import { formatToNepaliRupees } from '../utils/nepalLocalization';
+import { useDashboardRefresh } from '../context/DashboardRefreshContext';
 
 const UploadIcon = () => (
   <svg className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 transition-colors duration-300" fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -83,6 +84,7 @@ const UploadResume = () => {
   const fileInputRef = useRef(null);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { triggerRefresh } = useDashboardRefresh();
 
   const allowedFileTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
   const maxFileSize = 5 * 1024 * 1024;
@@ -139,6 +141,10 @@ const UploadResume = () => {
       if (response.success && response.data) {
         setUploadedResume(response.data);
         setFile(null); // Clear the selected file
+        // Automatically trigger analysis after upload
+        setTimeout(() => {
+          handleAnalyze();
+        }, 500); // slight delay to ensure state updates
       } else {
         throw new Error(response.message || 'Server failed to process the upload.');
       }
@@ -174,7 +180,7 @@ const UploadResume = () => {
             break;
           case 'completed':
             setAnalysisMessage('Analysis complete! Redirecting...');
-            console.log('✅ Analysis completed successfully, redirecting...');
+            triggerRefresh();
             setTimeout(() => {
               navigate(`/results/${uploadedResume._id}`);
             }, 1500);

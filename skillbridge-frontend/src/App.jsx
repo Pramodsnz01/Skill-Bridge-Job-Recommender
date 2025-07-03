@@ -10,7 +10,6 @@ import UploadResume from './pages/UploadResume';
 import Results from './pages/Results';
 import CareerPath from './pages/CareerPath';
 import AIAssistantDashboard from './pages/AIAssistantDashboard';
-import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import Settings from './pages/Settings';
 import './index.css';
 
@@ -31,7 +30,6 @@ function App() {
                 <Route path="/results/:resumeId" element={<Results />} />
                 <Route path="/career-path" element={<CareerPath />} />
                 <Route path="/ai-assistant" element={<AIAssistantDashboard />} />
-                <Route path="/analytics" element={<AnalyticsDashboard />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>
             </main>
