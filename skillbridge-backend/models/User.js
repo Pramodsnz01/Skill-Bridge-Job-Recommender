@@ -50,7 +50,9 @@ const userSchema = new mongoose.Schema({
         // Nepal phone number validation
         validate: {
             validator: function(v) {
-                return /^(\+977)?[9][0-9]{9}$|^[0][1-9][0-9]{7}$/.test(v);
+                // Remove dashes and spaces for validation
+                const cleanPhone = v.replace(/[\s\-]/g, '');
+                return /^(\+977)?[9][0-9]{9}$|^[0][1-9][0-9]{7}$/.test(cleanPhone);
             },
             message: 'Please enter a valid Nepali phone number'
         }
@@ -60,12 +62,6 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Address is required'],
         trim: true,
         maxlength: [200, 'Address cannot be more than 200 characters']
-    },
-    city: {
-        type: String,
-        required: [true, 'City is required'],
-        trim: true,
-        maxlength: [50, 'City cannot be more than 50 characters']
     },
     district: {
         type: String,

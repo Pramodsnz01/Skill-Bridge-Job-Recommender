@@ -22,7 +22,6 @@ const register = async (req, res) => {
             role,
             phone,
             address,
-            city,
             district,
             province,
             country,
@@ -38,10 +37,10 @@ const register = async (req, res) => {
         }
 
         // Validate Nepal-specific required fields
-        if (!phone || !address || !city || !district || !province) {
+        if (!phone || !address || !district || !province) {
             return res.status(400).json({
                 success: false,
-                message: 'Phone, address, city, district, and province are required'
+                message: 'Phone, address, district, and province are required'
             });
         }
 
@@ -63,7 +62,6 @@ const register = async (req, res) => {
             role: role || 'user',
             phone,
             address,
-            city,
             district,
             province: province || 'province3', // Default to Bagmati
             country: country || 'Nepal',

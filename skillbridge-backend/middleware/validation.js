@@ -29,8 +29,10 @@ const registerValidation = [
   body('phone', 'Phone number is required')
     .not().isEmpty().trim()
     .custom((value) => {
+      // Remove dashes and spaces for validation
+      const cleanPhone = value.replace(/[\s\-]/g, '');
       const phoneRegex = /^(\+977)?[9][0-9]{9}$|^[0][1-9][0-9]{7}$/;
-      if (!phoneRegex.test(value)) {
+      if (!phoneRegex.test(cleanPhone)) {
         throw new Error('Please enter a valid Nepali phone number');
       }
       return true;
@@ -39,10 +41,6 @@ const registerValidation = [
     .not().isEmpty().trim()
     .isLength({ max: 200 })
     .withMessage('Address cannot be more than 200 characters'),
-  body('city', 'City is required')
-    .not().isEmpty().trim()
-    .isLength({ max: 50 })
-    .withMessage('City cannot be more than 50 characters'),
   body('district', 'District is required')
     .not().isEmpty().trim()
     .isLength({ max: 50 })

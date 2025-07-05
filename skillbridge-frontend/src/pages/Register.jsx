@@ -13,7 +13,6 @@ const Register = () => {
     confirmPassword: '',
     phone: '',
     address: '',
-    city: '',
     district: '',
     province: '',
     agreeToTerms: false,
@@ -126,6 +125,7 @@ const Register = () => {
         address: formData.address.trim(),
         district: formData.district.trim(),
         province: formData.province.trim(),
+        country: 'Nepal',
       };
       console.log('Register payload:', userData); // Debug log
       const result = await register(userData);

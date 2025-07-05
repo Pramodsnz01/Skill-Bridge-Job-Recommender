@@ -748,3 +748,59 @@ Phone: +977-9...
 2025-07-03 17:43:35,801 - INFO - COMPLETED: [req_1751543915_3017] Analysis completed successfully in 142.00ms
 2025-07-03 17:43:35,802 - INFO - RESULTS: [req_1751543915_3017] Results: 7 skills, 3 domains, 3 gaps
 2025-07-03 17:43:35,804 - INFO - 127.0.0.1 - - [03/Jul/2025 17:43:35] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-03 17:54:41,742 - INFO - HEALTH: Health check requested
+2025-07-03 17:54:41,746 - INFO - 127.0.0.1 - - [03/Jul/2025 17:54:41] "GET /health HTTP/1.1" 200 -
+2025-07-03 17:54:43,082 - INFO - HEALTH: Health check requested
+2025-07-03 17:54:43,100 - INFO - 127.0.0.1 - - [03/Jul/2025 17:54:43] "GET /health HTTP/1.1" 200 -
+2025-07-03 17:54:43,242 - INFO - STARTING: [req_1751544583_8239] Starting resume analysis...
+2025-07-03 17:54:43,244 - INFO - RECEIVED: [req_1751544583_8239] Received JSON request with text length: 1610
+2025-07-03 17:54:43,245 - INFO - PROCESSING: [req_1751544583_8239] Processing text: Curriculum Vitae - Pramod Singh
+Personal Information
+Name: Pramod Singh
+Email: pramod.singh@email.co...
+2025-07-03 17:54:43,247 - INFO - ANALYZING: [req_1751544583_8239] Starting analysis pipeline...
+2025-07-03 17:54:43,249 - INFO - ANALYZING: Extracting skills from text...
+2025-07-03 17:54:43,359 - INFO - SUCCESS: Extracted 14 skills: ['github', 'git', 'php', 'mongodb', 'adaptability', 'python', 'mysql', 'javascript', 'scikit-learn', 'authentication']...
+2025-07-03 17:54:43,360 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-03 17:54:43,361 - INFO - SUCCESS: Extracted 6 total years of experience
+2025-07-03 17:54:43,361 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-03 17:54:43,442 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-03 17:54:43,443 - INFO - ANALYZING: Predicting career domains...
+2025-07-03 17:54:43,445 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Data Science', 'Finance']
+2025-07-03 17:54:43,445 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-03 17:54:43,446 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-03 17:54:43,447 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-03 17:54:43,447 - INFO - SUCCESS: Identified personality traits: ['Adaptable', 'Leadership', 'Collaborative']
+2025-07-03 17:54:43,448 - INFO - ANALYZING: Categorizing skills...
+2025-07-03 17:54:43,449 - INFO - SUCCESS: Categorized skills: 14 total
+2025-07-03 17:54:43,450 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-03 17:54:43,451 - INFO - SUCCESS: Generated 3 learning recommendation sets
+2025-07-03 17:54:43,451 - INFO - ANALYZING: Extracting education information...
+2025-07-03 17:54:43,452 - INFO - SUCCESS: Extracted education info: 0 degrees, 1 institutions
+2025-07-03 17:54:43,465 - INFO - DATABASE: Analysis saved for user 8ee3bba4-756c-4cc9-b7d6-dcdf3998bc42
+2025-07-03 17:54:43,466 - INFO - COMPLETED: [req_1751544583_8239] Analysis completed successfully in 211.00ms
+2025-07-03 17:54:43,467 - INFO - RESULTS: [req_1751544583_8239] Results: 14 skills, 3 domains, 3 gaps
+2025-07-03 17:54:43,468 - INFO - 127.0.0.1 - - [03/Jul/2025 17:54:43] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-05 07:14:06,075 - INFO - Loading spaCy model...
+2025-07-05 07:14:10,128 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-05 07:14:10,143 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-05 07:14:10,155 - INFO - DATABASE: Initializing SQLite database...
+2025-07-05 07:14:10,191 - INFO - DATABASE: Database initialized successfully
+2025-07-05 07:14:10,196 - INFO - FEATURES: Enhanced features available:
+2025-07-05 07:14:10,196 - INFO -   - 12 Career Domains
+2025-07-05 07:14:10,197 - INFO -   - 3 Skill Categories
+2025-07-05 07:14:10,197 - INFO -   - 6 Personality Traits
+2025-07-05 07:14:10,198 - INFO -   - 6 Learning Resource Categories
+2025-07-05 07:14:10,198 - INFO - ENDPOINTS: Available endpoints:
+2025-07-05 07:14:10,198 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-05 07:14:10,200 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-05 07:14:10,201 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-05 07:14:10,201 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-05 07:14:10,202 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-05 07:14:10,221 - INFO -   - GET  /health - Health check and feature information
+2025-07-05 07:14:10,229 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-05 07:14:10,368 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-05 07:14:10,371 - INFO - [33mPress CTRL+C to quit[0m
