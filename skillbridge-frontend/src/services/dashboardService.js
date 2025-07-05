@@ -141,4 +141,16 @@ export const exportAnalysisPDF = async (analysisId) => {
         console.error('Error exporting analysis PDF:', error);
         throw error;
     }
+};
+
+// Get latest analysis for the user
+export const getLatestAnalysisForUser = async () => {
+    try {
+        const authInstance = createAuthInstance();
+        const response = await authInstance.get('/dashboard/latest-analysis');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching latest analysis:', error);
+        throw error;
+    }
 }; 

@@ -117,8 +117,6 @@ const Dashboard = () => {
         setCareerDomains(careerDomainsResponse.value.data);
       }
 
-      console.log('Skill Gaps:', analytics?.skillGaps);
-
     } catch (err) {
       console.error('Dashboard data fetch error:', err);
       setError('Failed to load dashboard data. Please try again.');

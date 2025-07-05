@@ -271,7 +271,12 @@ const analyzeResume = async (req, res) => {
         };
         analysis.keywords = analysisResult.keywords || [];
         analysis.predictedCareerDomains = analysisResult.predicted_career_domains || [];
-        analysis.learningGaps = analysisResult.learning_gaps || [];
+        // --- FIX: Normalize learning_gaps to camelCase ---
+        analysis.learningGaps = (analysisResult.learning_gaps || []).map(gap => ({
+            domain: gap.domain || '',
+            missingSkills: gap.missing_skills || gap.missingSkills || [],
+            priority: gap.priority || 'Medium'
+        }));
         analysis.analysisSummary = {
             totalSkillsFound: analysisResult.analysis_summary?.total_skills_found || analysis.extractedSkills.length,
             yearsExperience: analysisResult.analysis_summary?.years_experience || analysis.experienceYears.totalYears,

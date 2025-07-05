@@ -8,7 +8,9 @@ const {
   getCareerDomainsSummary, 
   deleteAnalysis, 
   exportAnalysisPDF, 
-  debugListAnalysesForUser 
+  debugListAnalysesForUser,
+  debugSkillGaps,
+  getLatestAnalysisForUser
 } = require('../controllers/dashboardController');
 
 const router = express.Router();
@@ -34,7 +36,13 @@ router.delete('/analysis/:analysisId', auth, deleteAnalysis);
 // Export analysis as PDF
 router.get('/export-analysis/:analysisId', auth, exportAnalysisPDF);
 
+// Get latest analysis for dashboard per-resume chart
+router.get('/latest-analysis', auth, getLatestAnalysisForUser);
+
 // TEMPORARY DEBUG ENDPOINT
 router.get('/debug/analyses', auth, debugListAnalysesForUser);
+
+// DEBUG ENDPOINT: Check skill gaps
+router.get('/debug/skill-gaps', auth, debugSkillGaps);
 
 module.exports = router; 

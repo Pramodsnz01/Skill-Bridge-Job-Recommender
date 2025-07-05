@@ -38,9 +38,6 @@ const getDashboardAnalytics = async (req, res) => {
         const totalAnalyses = analysisHistory.length;
         const analysesByWeek = await getAnalysesByWeek(userId, startDate);
 
-        // 2. Most common skill gaps
-        const skillGaps = await getSkillGapsAnalytics(userId, startDate);
-
         // 3. Weekly learning progress
         const learningProgress = await getLearningProgress(userId, startDate);
 
@@ -53,7 +50,7 @@ const getDashboardAnalytics = async (req, res) => {
         // 6. Experience level trends
         const experienceTrends = await getExperienceTrends(userId, startDate);
 
-        // --- NEW: Aggregate real skill gaps from populated analyses ---
+        // 7. Extract real skill gaps from analysis data
         let realSkillGaps = [];
         for (const hist of analysisHistory) {
             if (hist.analysis && Array.isArray(hist.analysis.learningGaps)) {
@@ -72,6 +69,7 @@ const getDashboardAnalytics = async (req, res) => {
                 }
             }
         }
+        
         // Group by skill and priority
         const groupedSkillGaps = {};
         for (const gap of realSkillGaps) {
@@ -83,7 +81,6 @@ const getDashboardAnalytics = async (req, res) => {
             }
         }
         const mappedSkillGaps = Object.values(groupedSkillGaps);
-        // --- END NEW ---
 
         // Map backend fields to frontend expectations
         // 1. Map analysesByWeek to analysisTrend (convert week/count to date/analyses)
@@ -181,46 +178,7 @@ const getAnalysesByWeek = async (userId, startDate) => {
     }));
 };
 
-// Get skill gaps analytics for bar chart
-const getSkillGapsAnalytics = async (userId, startDate) => {
-    const skillGaps = await AnalysisHistory.aggregate([
-        {
-            $match: {
-                user: userId,
-                analysisDate: { $gte: startDate },
-                status: 'active'
-            }
-        },
-        {
-            $unwind: '$skillGaps'
-        },
-        {
-            $group: {
-                _id: {
-                    skill: '$skillGaps.skill',
-                    domain: '$skillGaps.domain',
-                    priority: '$skillGaps.priority'
-                },
-                count: { $sum: 1 },
-                avgMarketDemand: { $avg: '$skillGaps.marketDemand' }
-            }
-        },
-        {
-            $sort: { count: -1, avgMarketDemand: -1 }
-        },
-        {
-            $limit: 10
-        }
-    ]);
 
-    return skillGaps.map(gap => ({
-        skill: gap._id.skill,
-        domain: gap._id.domain,
-        priority: gap._id.priority,
-        frequency: gap.count,
-        marketDemand: Math.round(gap.avgMarketDemand * 10) / 10
-    }));
-};
 
 // Get learning progress for line chart
 const getLearningProgress = async (userId, startDate) => {
@@ -683,6 +641,117 @@ const debugListAnalysesForUser = async (req, res) => {
     }
 };
 
+// DEBUG ENDPOINT: Check skill gaps in recent analyses
+const debugSkillGaps = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { period = '30d' } = req.query;
+        
+        // Calculate date range
+        const now = new Date();
+        let startDate;
+        switch (period) {
+            case '7d':
+                startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                break;
+            case '30d':
+                startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                break;
+            case '90d':
+                startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                break;
+            case '1y':
+                startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+                break;
+            default:
+                startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        }
+
+        // Get analysis history with populated analysis
+        const analysisHistory = await AnalysisHistory.find({
+            user: userId,
+            analysisDate: { $gte: startDate },
+            status: 'active'
+        }).populate('analysis');
+
+        // Extract skill gaps
+        let allSkillGaps = [];
+        let analysesWithGaps = 0;
+        
+        for (const hist of analysisHistory) {
+            if (hist.analysis && Array.isArray(hist.analysis.learningGaps)) {
+                if (hist.analysis.learningGaps.length > 0) {
+                    analysesWithGaps++;
+                }
+                for (const gap of hist.analysis.learningGaps) {
+                    if (Array.isArray(gap.missingSkills)) {
+                        for (const skill of gap.missingSkills) {
+                            allSkillGaps.push({
+                                skill: skill,
+                                domain: gap.domain || '',
+                                priority: gap.priority || 'Medium',
+                                analysisId: hist.analysis._id,
+                                analysisDate: hist.analysisDate
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        res.json({
+            success: true,
+            data: {
+                totalAnalyses: analysisHistory.length,
+                analysesWithGaps,
+                totalSkillGaps: allSkillGaps.length,
+                skillGaps: allSkillGaps,
+                period,
+                startDate,
+                endDate: now
+            }
+        });
+    } catch (error) {
+        console.error('Debug skill gaps error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// Get the latest analysis for the current user
+const getLatestAnalysisForUser = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        // Find the most recent analysis history for the user
+        const latestHistory = await AnalysisHistory.findOne({
+            user: userId,
+            status: 'active'
+        })
+        .sort({ analysisDate: -1 })
+        .populate('analysis');
+
+        if (!latestHistory || !latestHistory.analysis) {
+            return res.json({ success: true, data: null });
+        }
+
+        // Return the analysis, including learningGaps
+        res.json({
+            success: true,
+            data: {
+                _id: latestHistory.analysis._id,
+                createdAt: latestHistory.analysis.createdAt,
+                learningGaps: latestHistory.analysis.learningGaps || [],
+                analysisSummary: latestHistory.analysis.analysisSummary || {},
+                predictedCareerDomains: latestHistory.analysis.predictedCareerDomains || [],
+                extractedSkills: latestHistory.analysis.extractedSkills || [],
+                resume: latestHistory.resume,
+            }
+        });
+    } catch (error) {
+        console.error('Latest analysis error:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch latest analysis', error: error.message });
+    }
+};
+
 module.exports = {
     getDashboardAnalytics,
     getRecentAnalyses,
@@ -691,5 +760,7 @@ module.exports = {
     getCareerDomainsSummary,
     deleteAnalysis,
     exportAnalysisPDF,
-    debugListAnalysesForUser
+    debugListAnalysesForUser,
+    debugSkillGaps,
+    getLatestAnalysisForUser
 }; 
