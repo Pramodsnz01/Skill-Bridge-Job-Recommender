@@ -112,7 +112,7 @@ const AnalyticsDashboard = () => {
                         <strong>Skill Gaps:</strong> {totalSkillGaps}
                     </p>
                 </div>
-                
+
                 {skillGapsChartData.length > 0 ? (
                     <div className="card mb-8">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Domain</h3>
@@ -122,7 +122,7 @@ const AnalyticsDashboard = () => {
                                 <XAxis 
                                     dataKey="domain" 
                                     stroke="#6b7280" 
-                                    className="dark:stroke-gray-400" 
+                                    className="dark:stroke-gray-400"
                                     tick={{ fill: '#6b7280' }}
                                     angle={-45}
                                     textAnchor="end"
@@ -131,11 +131,11 @@ const AnalyticsDashboard = () => {
                                 <YAxis stroke="#6b7280" className="dark:stroke-gray-400" tick={{ fill: '#6b7280' }} />
                                 <Tooltip 
                                     contentStyle={{ 
-                                        backgroundColor: '#ffffff', 
-                                        border: '1px solid #e5e7eb', 
-                                        borderRadius: '8px', 
-                                        color: '#374151' 
-                                    }} 
+                                        backgroundColor: '#ffffff',
+                                        border: '1px solid #e5e7eb',
+                                        borderRadius: '8px',
+                                        color: '#374151'
+                                    }}
                                     className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                                     formatter={(value, name) => [
                                         value, 
@@ -155,10 +155,10 @@ const AnalyticsDashboard = () => {
                         </div>
                     </div>
                 )}
-                
-                <div className="card">
+
+                    <div className="card">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Domain Summary</h3>
-                    <div className="space-y-3">
+                        <div className="space-y-3">
                         {skillGapsChartData.length > 0 ? (
                             skillGapsChartData.map((domainData, idx) => (
                                 <div key={idx} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300">
@@ -195,7 +195,7 @@ const AnalyticsDashboard = () => {
                         ) : (
                             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                                 <p>No domains with skill gaps found</p>
-                            </div>
+                        </div>
                         )}
                     </div>
                 </div>

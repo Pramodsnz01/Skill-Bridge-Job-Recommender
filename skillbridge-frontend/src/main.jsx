@@ -7,7 +7,7 @@ import { DashboardRefreshProvider } from './context/DashboardRefreshContext'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <DashboardRefreshProvider>
-      <App />
+    <App />
     </DashboardRefreshProvider>
   </StrictMode>,
 )

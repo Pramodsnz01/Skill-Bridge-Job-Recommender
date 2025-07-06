@@ -404,13 +404,19 @@ def identify_learning_gaps(skills, predicted_domains):
                     importance = sum(1 for domain_skills_list in CAREER_DOMAINS.values() if skill in domain_skills_list)
                     skill_importance[skill] = importance
                 
-                # Sort by importance (descending) and take top 5
-                sorted_missing_skills = sorted(missing_skills_list, key=lambda x: skill_importance.get(x, 0), reverse=True)[:5]
-                
+                # Sort by importance (descending) and include all missing skills
+                sorted_missing_skills = sorted(missing_skills_list, key=lambda x: skill_importance.get(x, 0), reverse=True)
+                num_missing = len(sorted_missing_skills)
+                if num_missing >= 4:
+                    priority = "High"
+                elif num_missing >= 2:
+                    priority = "Medium"
+                else:
+                    priority = "Low"
                 gaps.append({
                     "domain": domain,
                     "missing_skills": sorted_missing_skills,
-                    "priority": "High" if len(missing_skills) > 5 else "Medium"
+                    "priority": priority
                 })
     
     logger.info(f"SUCCESS: Identified {len(gaps)} learning gaps")

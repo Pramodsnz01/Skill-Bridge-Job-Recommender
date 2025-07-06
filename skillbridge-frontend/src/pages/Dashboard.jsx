@@ -9,7 +9,8 @@ import {
   getSkillsSummary,
   getCareerDomainsSummary,
   deleteAnalysis,
-  exportAnalysisPDF
+  exportAnalysisPDF,
+  getLatestAnalysisForUser
 } from '../services/dashboardService';
 import Toast from '../components/Toast';
 import {
@@ -34,6 +35,7 @@ const Dashboard = () => {
   const [userStats, setUserStats] = useState(null);
   const [skillsSummary, setSkillsSummary] = useState(null);
   const [careerDomains, setCareerDomains] = useState(null);
+  const [latestAnalysis, setLatestAnalysis] = useState(null);
   
   // UI state
   const [showCharts, setShowCharts] = useState(true);
@@ -59,10 +61,10 @@ const Dashboard = () => {
     return Object.values(grouped);
   };
 
-  function getSkillGapsByDomainData(skillGaps) {
-    if (!Array.isArray(skillGaps)) return [];
+  function getSkillGapsByDomainData(learningGaps) {
+    if (!Array.isArray(learningGaps)) return [];
     const grouped = {};
-    skillGaps.forEach(gap => {
+    learningGaps.forEach(gap => {
       const domain = gap.domain || 'Unknown Domain';
       if (!grouped[domain]) {
         grouped[domain] = {
@@ -73,7 +75,7 @@ const Dashboard = () => {
           lowPriority: 0
         };
       }
-      const skillCount = gap.frequency || 1; // Use frequency, default to 1 if missing
+      const skillCount = Array.isArray(gap.missingSkills) ? gap.missingSkills.length : 0;
       grouped[domain].totalGaps += skillCount;
       const priority = (gap.priority || 'Medium').toLowerCase();
       if (priority === 'high') {
@@ -96,6 +98,7 @@ const Dashboard = () => {
     }
     
     fetchDashboardData();
+    fetchLatestAnalysis();
   }, [user, period, refreshFlag]);
 
   const showToast = (message, type = 'info') => {
@@ -153,6 +156,16 @@ const Dashboard = () => {
       showToast('Failed to load dashboard data', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchLatestAnalysis = async () => {
+    try {
+      const response = await getLatestAnalysisForUser();
+      setLatestAnalysis(response.data);
+    } catch (err) {
+      console.error('Failed to fetch latest analysis:', err);
+      setLatestAnalysis(null);
     }
   };
 
@@ -436,14 +449,14 @@ const Dashboard = () => {
             )}
 
             {/* Skill Gaps by Domain */}
-            {analytics.skillGaps && analytics.skillGaps.length > 0 && (
+            {latestAnalysis && latestAnalysis.learningGaps && latestAnalysis.learningGaps.length > 0 && (
               <>
-                {console.log("Raw skillGaps from API:", analytics.skillGaps)}
-                {console.log("Skill Gaps Chart Data:", getSkillGapsByDomainData(analytics.skillGaps))}
+                {console.log("Raw learningGaps from latest analysis:", latestAnalysis.learningGaps)}
+                {console.log("Skill Gaps Chart Data (latest):", getSkillGapsByDomainData(latestAnalysis.learningGaps))}
                 <div className="card">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Domain</h3>
                   <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={getSkillGapsByDomainData(analytics.skillGaps)}>
+                    <BarChart data={getSkillGapsByDomainData(latestAnalysis.learningGaps)}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
                       <XAxis 
                         dataKey="domain" 
@@ -469,11 +482,13 @@ const Dashboard = () => {
                         className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                         formatter={(value, name) => [
                           value, 
+                          name === 'totalGaps' ? 'Total Missing Skills' :
                           name === 'highPriority' ? 'High Priority' :
                           name === 'mediumPriority' ? 'Medium Priority' :
                           name === 'lowPriority' ? 'Low Priority' : name
                         ]}
                       />
+                      <Bar dataKey="totalGaps" fill="#3b82f6" name="Total Missing Skills" />
                       <Bar dataKey="highPriority" stackId="a" fill="#ef4444" name="High Priority" />
                       <Bar dataKey="mediumPriority" stackId="a" fill="#f59e0b" name="Medium Priority" />
                       <Bar dataKey="lowPriority" stackId="a" fill="#10b981" name="Low Priority" />

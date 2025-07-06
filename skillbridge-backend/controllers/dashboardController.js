@@ -117,18 +117,18 @@ const getDashboardAnalytics = async (req, res) => {
         const safeSkillGaps = Array.isArray(mappedSkillGapsForFrontend) ? mappedSkillGapsForFrontend : [];
 
         const analyticsData = {
-            overview: {
-                totalAnalyses,
-                period,
-                startDate,
-                endDate: now
-            },
+                overview: {
+                    totalAnalyses,
+                    period,
+                    startDate,
+                    endDate: now
+                },
             analysisTrend,
             skillsDistribution: mappedSkillsDistribution,
             careerDomains: mappedCareerDomains,
             skillGaps: safeSkillGaps,
-            learningProgress,
-            experienceTrends
+                learningProgress,
+                experienceTrends
         };
         console.log('Outgoing analytics data:', JSON.stringify(analyticsData, null, 2));
         res.json({
@@ -328,8 +328,8 @@ const getExperienceTrends = async (userId, startDate) => {
         let mostCommon = '';
         if (levelKeys.length > 0) {
             mostCommon = levelKeys.reduce((a, b) =>
-                levelCounts[a] > levelCounts[b] ? a : b
-            );
+            levelCounts[a] > levelCounts[b] ? a : b
+        );
         }
 
         return {

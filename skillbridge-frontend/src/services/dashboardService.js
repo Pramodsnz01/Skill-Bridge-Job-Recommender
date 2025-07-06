@@ -141,7 +141,7 @@ export const exportAnalysisPDF = async (analysisId) => {
         console.error('Error exporting analysis PDF:', error);
         throw error;
     }
-};
+}; 
 
 // Get latest analysis for the user
 export const getLatestAnalysisForUser = async () => {
