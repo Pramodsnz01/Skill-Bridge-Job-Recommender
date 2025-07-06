@@ -636,7 +636,7 @@ const Dashboard = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
-                            {analysis.analysis?.resume?.originalName || 'Resume Analysis'}
+                            {analysis.analysis?.resume?.originalName || analysis.analysis?.resume?.filename || 'Resume'}
                           </p>
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(analysis.analysis?.status)}`}>
                             {analysis.analysis?.status || 'Unknown'}
@@ -661,14 +661,6 @@ const Dashboard = () => {
                       </div>
                       
                       <div className="flex-shrink-0 flex space-x-2">
-                        <button
-                          onClick={() => handleExportAnalysis(analysis.analysis?._id)}
-                          disabled={exportingAnalysis === analysis.analysis?._id}
-                          className="btn-sm btn-secondary"
-                        >
-                          {exportingAnalysis === analysis.analysis?._id ? 'Exporting...' : 'Export'}
-                        </button>
-                        
                         <button
                           onClick={() => handleDeleteAnalysis(analysis._id)}
                           disabled={deletingAnalysis === analysis._id}

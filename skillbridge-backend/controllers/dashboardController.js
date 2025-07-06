@@ -350,7 +350,10 @@ const getRecentAnalyses = async (req, res) => {
             user: userId,
             status: 'active'
         })
-        .populate('analysis')
+        .populate({
+            path: 'analysis',
+            populate: { path: 'resume' }
+        })
         .sort({ analysisDate: -1 })
         .limit(parseInt(limit));
 
