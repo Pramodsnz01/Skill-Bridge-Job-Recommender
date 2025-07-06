@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FaLightbulb, FaQuestionCircle, FaCheck, FaSync } from "react-icons/fa";
+import { FaLightbulb, FaQuestionCircle, FaSync } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext';
 
 const ActionableInsights = () => {
+  const { user } = useAuth();
   const [tab, setTab] = useState("tips");
   const [tipIndex, setTipIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [tipDone, setTipDone] = useState(false);
   const [resumeTips, setResumeTips] = useState([]);
   const [interviewQuestions, setInterviewQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,10 @@ const ActionableInsights = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/insights");
+        const name = user?.name || 'User';
+        // If you have a target role field, use it; otherwise, default
+        const role = user?.targetRole || 'your target job';
+        const res = await fetch(`/api/insights?name=${encodeURIComponent(name)}&role=${encodeURIComponent(role)}`);
         if (!res.ok) throw new Error("Failed to fetch insights");
         const data = await res.json();
         setResumeTips(data.resumeTips || []);
@@ -28,12 +32,14 @@ const ActionableInsights = () => {
       }
     };
     fetchInsights();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  // Reset tipDone when switching tips or tabs
+  // Reset tip/question index when switching tabs
   useEffect(() => {
-    setTipDone(false);
-  }, [tipIndex, tab]);
+    setTipIndex(0);
+    setQuestionIndex(0);
+  }, [tab]);
 
   const handleNextTip = () => {
     setTipIndex((prev) => (prev + 1) % resumeTips.length);
@@ -78,32 +84,42 @@ const ActionableInsights = () => {
       </div>
       {tab === "tips" ? (
         resumeTips.length > 0 ? (
-          <div className="flex items-center gap-3 bg-gray-800 p-4 rounded-lg">
-            <FaLightbulb className="text-yellow-400 text-2xl" />
-            <span className="text-white flex-1">{resumeTips[tipIndex]}</span>
-            <button
-              className="ml-2 text-blue-400 hover:text-blue-600"
-              onClick={handleNextTip}
-              title="Next Tip"
-            >
-              <FaSync />
-            </button>
+          <div className="flex flex-col gap-2 bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center gap-3">
+              <FaLightbulb className="text-yellow-400 text-2xl" />
+              <span className="text-white flex-1">{resumeTips[tipIndex]?.text}</span>
+              <button
+                className="ml-2 text-blue-400 hover:text-blue-600"
+                onClick={handleNextTip}
+                title="Next Tip"
+              >
+                <FaSync />
+              </button>
+            </div>
+            {resumeTips[tipIndex]?.explanation && (
+              <div className="text-xs text-gray-400 mt-2 pl-8">{resumeTips[tipIndex].explanation}</div>
+            )}
           </div>
         ) : (
           <div className="text-gray-400">No resume tips available.</div>
         )
       ) : (
         interviewQuestions.length > 0 ? (
-          <div className="flex items-center gap-3 bg-gray-800 p-4 rounded-lg">
-            <FaQuestionCircle className="text-blue-400 text-2xl" />
-            <span className="text-white flex-1">{interviewQuestions[questionIndex]}</span>
-            <button
-              className="ml-2 text-blue-400 hover:text-blue-600"
-              onClick={handleNextQuestion}
-              title="Next Question"
-            >
-              <FaSync />
-            </button>
+          <div className="flex flex-col gap-2 bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center gap-3">
+              <FaQuestionCircle className="text-blue-400 text-2xl" />
+              <span className="text-white flex-1">{interviewQuestions[questionIndex]?.text}</span>
+              <button
+                className="ml-2 text-blue-400 hover:text-blue-600"
+                onClick={handleNextQuestion}
+                title="Next Question"
+              >
+                <FaSync />
+              </button>
+            </div>
+            {interviewQuestions[questionIndex]?.explanation && (
+              <div className="text-xs text-gray-400 mt-2 pl-8">{interviewQuestions[questionIndex].explanation}</div>
+            )}
           </div>
         ) : (
           <div className="text-gray-400">No interview questions available.</div>
