@@ -18,6 +18,7 @@ import {
   PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
 } from 'recharts';
 import { useDashboardRefresh } from '../context/DashboardRefreshContext';
+import ActionableInsights from '../components/ActionableInsights';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -412,126 +413,78 @@ const Dashboard = () => {
 
         {/* Charts Section */}
         {showCharts && analytics && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Analyses Over Time */}
-            {analytics.analysesByWeek && analytics.analysesByWeek.length > 0 && (
-              <div className="card">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-                  Analyses Over Time
-                </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={analytics.analysesByWeek}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis 
-                      dataKey="week" 
-                      stroke="#6B7280"
-                      fontSize={12}
-                    />
-                    <YAxis stroke="#6B7280" fontSize={12} />
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
-                        borderRadius: '8px',
-                        color: '#F9FAFB'
-                      }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="count" 
-                      stroke="#3B82F6" 
-                      strokeWidth={3}
-                      dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* Skill Gaps by Domain */}
-            {latestAnalysis && latestAnalysis.learningGaps && latestAnalysis.learningGaps.length > 0 && (
-              <>
-                {console.log("Raw learningGaps from latest analysis:", latestAnalysis.learningGaps)}
-                {console.log("Skill Gaps Chart Data (latest):", getSkillGapsByDomainData(latestAnalysis.learningGaps))}
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Domain</h3>
+          <div className="w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8 w-full">
+              {/* Analyses Over Time */}
+              {analytics.analysesByWeek && analytics.analysesByWeek.length > 0 && (
+                <div className="card lg:col-span-2 col-span-1 w-full">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
+                    Analyses Over Time
+                  </h3>
                   <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={getSkillGapsByDomainData(latestAnalysis.learningGaps)}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
+                    <LineChart data={analytics.analysesByWeek}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                       <XAxis 
-                        dataKey="domain" 
-                        stroke="#6b7280" 
-                        className="dark:stroke-gray-400"
-                        tick={{ fill: '#6b7280' }}
-                        angle={-45}
-                        textAnchor="end"
-                        height={80}
+                        dataKey="week" 
+                        stroke="#6B7280"
+                        fontSize={12}
                       />
-                      <YAxis 
-                        stroke="#6b7280" 
-                        className="dark:stroke-gray-400"
-                        tick={{ fill: '#6b7280' }}
-                      />
+                      <YAxis stroke="#6B7280" fontSize={12} />
                       <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: '#ffffff',
-                          border: '1px solid #e5e7eb',
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
                           borderRadius: '8px',
-                          color: '#374151'
+                          color: '#F9FAFB'
                         }}
-                        className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-                        formatter={(value, name) => [
-                          value, 
-                          name === 'totalGaps' ? 'Total Missing Skills' :
-                          name === 'highPriority' ? 'High Priority' :
-                          name === 'mediumPriority' ? 'Medium Priority' :
-                          name === 'lowPriority' ? 'Low Priority' : name
-                        ]}
                       />
-                      <Bar dataKey="totalGaps" fill="#3b82f6" name="Total Missing Skills" />
-                      <Bar dataKey="highPriority" stackId="a" fill="#ef4444" name="High Priority" />
-                      <Bar dataKey="mediumPriority" stackId="a" fill="#f59e0b" name="Medium Priority" />
-                      <Bar dataKey="lowPriority" stackId="a" fill="#10b981" name="Low Priority" />
-                    </BarChart>
+                      <Line 
+                        type="monotone" 
+                        dataKey="count" 
+                        stroke="#3B82F6" 
+                        strokeWidth={3}
+                        dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
-              </>
-            )}
+              )}
 
-            {/* Skills Distribution */}
-            {analytics.skillsDistribution && analytics.skillsDistribution.length > 0 && (
-              <div className="card">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-                  Skills Distribution
-                </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={analytics.skillsDistribution}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="count"
-                    >
-                      {analytics.skillsDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
-                        borderRadius: '8px',
-                        color: '#F9FAFB'
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+              {/* Skills Distribution */}
+              {analytics.skillsDistribution && analytics.skillsDistribution.length > 0 && (
+                <div className="card lg:col-span-2 col-span-1 w-full">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
+                    Skills Distribution
+                  </h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={analytics.skillsDistribution}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="count"
+                      >
+                        {analytics.skillsDistribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#F9FAFB'
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -676,6 +629,39 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Actionable Insights and Skill Gaps by Domain Section */}
+        {latestAnalysis && latestAnalysis.learningGaps && latestAnalysis.learningGaps.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 mt-8">
+            <div className="card p-6">
+              <ActionableInsights />
+            </div>
+            <div className="card p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
+                Skill Gaps by Domain
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={getSkillGapsByDomainData(latestAnalysis.learningGaps)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="domain" stroke="#6B7280" fontSize={12} />
+                  <YAxis stroke="#6B7280" fontSize={12} />
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: '#1F2937',
+                      border: '1px solid #374151',
+                      borderRadius: '8px',
+                      color: '#F9FAFB'
+                    }}
+                  />
+                  <Bar dataKey="totalGaps" fill="#3B82F6" />
+                  <Bar dataKey="highPriority" fill="#FFBB28" />
+                  <Bar dataKey="mediumPriority" fill="#FF8042" />
+                  <Bar dataKey="lowPriority" fill="#8884D8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
 
         {/* Profile Completion Progress */}
         {userStats && (
