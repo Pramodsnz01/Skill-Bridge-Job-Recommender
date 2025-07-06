@@ -59,6 +59,36 @@ const Dashboard = () => {
     return Object.values(grouped);
   };
 
+  function getSkillGapsByDomainData(skillGaps) {
+    if (!Array.isArray(skillGaps)) return [];
+    const grouped = {};
+    skillGaps.forEach(gap => {
+      const domain = gap.domain || 'Unknown Domain';
+      if (!grouped[domain]) {
+        grouped[domain] = {
+          domain: domain,
+          totalGaps: 0,
+          highPriority: 0,
+          mediumPriority: 0,
+          lowPriority: 0
+        };
+      }
+      const skillCount = gap.frequency || 1; // Use frequency, default to 1 if missing
+      grouped[domain].totalGaps += skillCount;
+      const priority = (gap.priority || 'Medium').toLowerCase();
+      if (priority === 'high') {
+        grouped[domain].highPriority += skillCount;
+      } else if (priority === 'medium') {
+        grouped[domain].mediumPriority += skillCount;
+      } else {
+        grouped[domain].lowPriority += skillCount;
+      }
+    });
+    return Object.values(grouped)
+      .filter(item => item.totalGaps > 0)
+      .sort((a, b) => b.totalGaps - a.totalGaps);
+  }
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -405,60 +435,52 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* Skill Gaps by Priority */}
+            {/* Skill Gaps by Domain */}
             {analytics.skillGaps && analytics.skillGaps.length > 0 && (
-              <div className="card">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Priority</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={getSkillGapsByPriorityData(analytics.skillGaps)}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
-                    <XAxis 
-                      dataKey="category" 
-                      stroke="#6b7280" 
-                      className="dark:stroke-gray-400"
-                      tick={{ fill: '#6b7280' }}
-                    />
-                    <YAxis 
-                      stroke="#6b7280" 
-                      className="dark:stroke-gray-400"
-                      tick={{ fill: '#6b7280' }}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '8px',
-                        color: '#374151'
-                      }}
-                      className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="high" 
-                      stackId="1" 
-                      stroke="#ef4444" 
-                      fill="#ef4444" 
-                      fillOpacity={0.6}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="medium" 
-                      stackId="1" 
-                      stroke="#f59e0b" 
-                      fill="#f59e0b" 
-                      fillOpacity={0.6}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="low" 
-                      stackId="1" 
-                      stroke="#10b981" 
-                      fill="#10b981" 
-                      fillOpacity={0.6}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+              <>
+                {console.log("Raw skillGaps from API:", analytics.skillGaps)}
+                {console.log("Skill Gaps Chart Data:", getSkillGapsByDomainData(analytics.skillGaps))}
+                <div className="card">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Skill Gaps by Domain</h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={getSkillGapsByDomainData(analytics.skillGaps)}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
+                      <XAxis 
+                        dataKey="domain" 
+                        stroke="#6b7280" 
+                        className="dark:stroke-gray-400"
+                        tick={{ fill: '#6b7280' }}
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                      />
+                      <YAxis 
+                        stroke="#6b7280" 
+                        className="dark:stroke-gray-400"
+                        tick={{ fill: '#6b7280' }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#ffffff',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          color: '#374151'
+                        }}
+                        className="dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                        formatter={(value, name) => [
+                          value, 
+                          name === 'highPriority' ? 'High Priority' :
+                          name === 'mediumPriority' ? 'Medium Priority' :
+                          name === 'lowPriority' ? 'Low Priority' : name
+                        ]}
+                      />
+                      <Bar dataKey="highPriority" stackId="a" fill="#ef4444" name="High Priority" />
+                      <Bar dataKey="mediumPriority" stackId="a" fill="#f59e0b" name="Medium Priority" />
+                      <Bar dataKey="lowPriority" stackId="a" fill="#10b981" name="Low Priority" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </>
             )}
 
             {/* Skills Distribution */}
