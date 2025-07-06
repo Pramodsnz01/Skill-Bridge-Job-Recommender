@@ -287,12 +287,6 @@ const Dashboard = () => {
           
           <div className="flex items-center space-x-3">
             <button
-              onClick={() => setShowCharts(!showCharts)}
-              className="btn-secondary"
-            >
-              {showCharts ? '📊 Hide Charts' : '📊 Show Charts'}
-            </button>
-            <button
               onClick={handleLogout}
               className="btn-danger"
             >
