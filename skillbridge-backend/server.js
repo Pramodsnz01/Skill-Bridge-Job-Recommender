@@ -32,6 +32,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/skillbrid
 // Import and use routes
 const routes = require('./routes');
 app.use('/api', routes);
+const insightsRoutes = require('./routes/insightsRoutes');
+app.use('/api/insights', insightsRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
