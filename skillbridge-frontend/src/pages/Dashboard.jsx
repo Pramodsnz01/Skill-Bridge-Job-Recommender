@@ -565,45 +565,47 @@ const Dashboard = () => {
               ) : (
                 <div className="space-y-4">
                   {recentAnalyses.map((analysis) => (
-                    <div key={analysis._id} className="flex items-start space-x-3 p-4 border border-gray-100 dark:border-gray-700 rounded-lg transition-all duration-300 hover:shadow-md dark:hover:shadow-gray-800/50">
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center transition-colors duration-300">
-                          <span className="text-blue-600 dark:text-blue-400 text-sm">📊</span>
+                    <div key={analysis._id} className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0 p-4 border border-gray-100 dark:border-gray-700 rounded-lg transition-all duration-300 hover:shadow-md dark:hover:shadow-gray-800/50">
+                      {/* Icon */}
+                      <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center transition-colors duration-300">
+                          <span className="text-blue-600 dark:text-blue-400 text-lg">📊</span>
                         </div>
                       </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                      {/* Info */}
+                      <div className="flex-1 min-w-0 flex flex-col sm:items-start">
+                        {/* First row: name + status (side by side and centered on mobile) */}
+                        <div className="flex flex-row justify-center items-center sm:justify-start sm:items-center sm:space-x-3 mb-1 gap-2">
+                          <p className="text-base font-semibold text-gray-900 dark:text-white text-center sm:text-left">
                             {analysis.analysis?.resume?.originalName || analysis.analysis?.resume?.filename || 'Resume'}
                           </p>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(analysis.analysis?.status)}`}>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-0 ${getStatusColor(analysis.analysis?.status)}`}>
                             {analysis.analysis?.status || 'Unknown'}
                           </span>
                         </div>
-                        
-                        <div className="flex items-center space-x-4 mt-1">
-                          <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                        {/* Second row: date, skills, gaps (stacked and centered on mobile) */}
+                        <div className="flex flex-col items-center sm:flex-row sm:items-center sm:space-x-4 gap-0.5">
+                          <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left">
                             {new Date(analysis.analysisDate).toLocaleDateString()}
                           </p>
                           {analysis.analysisMetrics && (
                             <>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                              <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left">
                                 {analysis.analysisMetrics.totalSkillsFound} skills found
                               </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                              <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left">
                                 {analysis.analysisMetrics.totalGapsIdentified} gaps identified
                               </p>
                             </>
                           )}
                         </div>
                       </div>
-                      
-                      <div className="flex-shrink-0 flex space-x-2">
+                      {/* Delete Button */}
+                      <div className="flex-shrink-0 flex items-center justify-center w-full sm:w-auto mt-3 sm:mt-0">
                         <button
                           onClick={() => handleDeleteAnalysis(analysis._id)}
                           disabled={deletingAnalysis === analysis._id}
-                          className="btn-sm btn-danger"
+                          className="btn-sm btn-danger w-full sm:w-auto"
                         >
                           {deletingAnalysis === analysis._id ? 'Deleting...' : 'Delete'}
                         </button>
