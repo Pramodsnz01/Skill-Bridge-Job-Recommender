@@ -285,14 +285,6 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={handleLogout}
-              className="btn-danger"
-            >
-              Logout
-            </button>
-          </div>
         </div>
 
         {/* Error Alert */}
