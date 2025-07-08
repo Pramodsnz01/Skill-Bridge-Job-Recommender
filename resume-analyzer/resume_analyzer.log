@@ -1735,3 +1735,173 @@ Email: pramod.singh@email.co...
 2025-07-06 15:46:50,152 - INFO - COMPLETED: [req_1751796109_9077] Analysis completed successfully in 233.99ms
 2025-07-06 15:46:50,153 - INFO - RESULTS: [req_1751796109_9077] Results: 6 skills, 3 domains, 3 gaps
 2025-07-06 15:46:50,154 - INFO - 127.0.0.1 - - [06/Jul/2025 15:46:50] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-06 18:02:29,785 - INFO - HEALTH: Health check requested
+2025-07-06 18:02:29,802 - INFO - 127.0.0.1 - - [06/Jul/2025 18:02:29] "GET /health HTTP/1.1" 200 -
+2025-07-06 18:02:30,087 - INFO - STARTING: [req_1751804250_478] Starting resume analysis...
+2025-07-06 18:02:30,102 - INFO - RECEIVED: [req_1751804250_478] Received JSON request with text length: 972
+2025-07-06 18:02:30,103 - INFO - PROCESSING: [req_1751804250_478] Processing text: Curriculum Vitae
+Personal Information
+Name: Aayush Karki
+Email: aayush.karki@email.com
+Phone: +977-9...
+2025-07-06 18:02:30,104 - INFO - ANALYZING: [req_1751804250_478] Starting analysis pipeline...
+2025-07-06 18:02:30,104 - INFO - ANALYZING: Extracting skills from text...
+2025-07-06 18:02:30,348 - INFO - SUCCESS: Extracted 4 skills: ['animation', 'git', 'github', 'web design']
+2025-07-06 18:02:30,349 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-06 18:02:30,351 - INFO - SUCCESS: Extracted 4 total years of experience
+2025-07-06 18:02:30,352 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-06 18:02:30,410 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-06 18:02:30,411 - INFO - ANALYZING: Predicting career domains...
+2025-07-06 18:02:30,413 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Design & Creative', 'Data Science']
+2025-07-06 18:02:30,414 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-06 18:02:30,417 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-06 18:02:30,418 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-06 18:02:30,421 - INFO - SUCCESS: Identified personality traits: ['Creative', 'Collaborative', 'Adaptable']
+2025-07-06 18:02:30,422 - INFO - ANALYZING: Categorizing skills...
+2025-07-06 18:02:30,423 - INFO - SUCCESS: Categorized skills: 4 total
+2025-07-06 18:02:30,423 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-06 18:02:30,425 - INFO - SUCCESS: Generated 3 learning recommendation sets
+2025-07-06 18:02:30,425 - INFO - ANALYZING: Extracting education information...
+2025-07-06 18:02:30,427 - INFO - SUCCESS: Extracted education info: 0 degrees, 1 institutions
+2025-07-06 18:02:30,443 - INFO - DATABASE: Analysis saved for user 043d953a-7301-43fa-92aa-245e24d55b1c
+2025-07-06 18:02:30,445 - INFO - COMPLETED: [req_1751804250_478] Analysis completed successfully in 341.00ms
+2025-07-06 18:02:30,445 - INFO - RESULTS: [req_1751804250_478] Results: 4 skills, 3 domains, 3 gaps
+2025-07-06 18:02:30,448 - INFO - 127.0.0.1 - - [06/Jul/2025 18:02:30] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-07 12:09:50,042 - INFO - Loading spaCy model...
+2025-07-07 12:09:51,455 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-07 12:09:51,459 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-07 12:09:51,460 - INFO - DATABASE: Initializing SQLite database...
+2025-07-07 12:09:51,481 - INFO - DATABASE: Database initialized successfully
+2025-07-07 12:09:51,482 - INFO - FEATURES: Enhanced features available:
+2025-07-07 12:09:51,482 - INFO -   - 12 Career Domains
+2025-07-07 12:09:51,483 - INFO -   - 3 Skill Categories
+2025-07-07 12:09:51,483 - INFO -   - 6 Personality Traits
+2025-07-07 12:09:51,484 - INFO -   - 6 Learning Resource Categories
+2025-07-07 12:09:51,484 - INFO - ENDPOINTS: Available endpoints:
+2025-07-07 12:09:51,485 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-07 12:09:51,485 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-07 12:09:51,486 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-07 12:09:51,486 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-07 12:09:51,487 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-07 12:09:51,488 - INFO -   - GET  /health - Health check and feature information
+2025-07-07 12:09:51,488 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-07 12:09:51,575 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.101.210:5001
+2025-07-07 12:09:51,576 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-07 12:11:30,221 - INFO - HEALTH: Health check requested
+2025-07-07 12:11:30,223 - INFO - 127.0.0.1 - - [07/Jul/2025 12:11:30] "GET /health HTTP/1.1" 200 -
+2025-07-07 12:11:30,542 - INFO - STARTING: [req_1751869590_1122] Starting resume analysis...
+2025-07-07 12:11:30,544 - INFO - RECEIVED: [req_1751869590_1122] Received JSON request with text length: 1034
+2025-07-07 12:11:30,544 - INFO - PROCESSING: [req_1751869590_1122] Processing text: Curriculum Vitae
+Personal Information
+Name: Binita Sharma
+Email: binita.sharma@email.com
+Phone: +977...
+2025-07-07 12:11:30,545 - INFO - ANALYZING: [req_1751869590_1122] Starting analysis pipeline...
+2025-07-07 12:11:30,546 - INFO - ANALYZING: Extracting skills from text...
+2025-07-07 12:11:30,656 - INFO - SUCCESS: Extracted 5 skills: ['data analysis', 'git', 'github', 'sales', 'statistics']
+2025-07-07 12:11:30,656 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-07 12:11:30,659 - INFO - SUCCESS: Extracted 4 total years of experience
+2025-07-07 12:11:30,660 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-07 12:11:30,719 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-07 12:11:30,720 - INFO - ANALYZING: Predicting career domains...
+2025-07-07 12:11:30,721 - INFO - SUCCESS: Predicted career domains: ['Data Science', 'Software Development', 'Finance']
+2025-07-07 12:11:30,722 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-07 12:11:30,724 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-07 12:11:30,725 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-07 12:11:30,726 - INFO - SUCCESS: Identified personality traits: ['Analytical', 'Creative']
+2025-07-07 12:11:30,727 - INFO - ANALYZING: Categorizing skills...
+2025-07-07 12:11:30,728 - INFO - SUCCESS: Categorized skills: 5 total
+2025-07-07 12:11:30,728 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-07 12:11:30,729 - INFO - SUCCESS: Generated 5 learning recommendation sets
+2025-07-07 12:11:30,729 - INFO - ANALYZING: Extracting education information...
+2025-07-07 12:11:30,734 - INFO - SUCCESS: Extracted education info: 0 degrees, 1 institutions
+2025-07-07 12:11:30,752 - INFO - DATABASE: Analysis saved for user ccfbafc1-f4b2-473a-9e05-74663fe9582b
+2025-07-07 12:11:30,754 - INFO - COMPLETED: [req_1751869590_1122] Analysis completed successfully in 193.00ms
+2025-07-07 12:11:30,754 - INFO - RESULTS: [req_1751869590_1122] Results: 5 skills, 3 domains, 3 gaps
+2025-07-07 12:11:30,756 - INFO - 127.0.0.1 - - [07/Jul/2025 12:11:30] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-07 15:27:36,034 - INFO - Loading spaCy model...
+2025-07-07 15:27:37,219 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-07 15:27:37,223 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-07 15:27:37,224 - INFO - DATABASE: Initializing SQLite database...
+2025-07-07 15:27:37,253 - INFO - DATABASE: Database initialized successfully
+2025-07-07 15:27:37,255 - INFO - FEATURES: Enhanced features available:
+2025-07-07 15:27:37,258 - INFO -   - 12 Career Domains
+2025-07-07 15:27:37,260 - INFO -   - 3 Skill Categories
+2025-07-07 15:27:37,261 - INFO -   - 6 Personality Traits
+2025-07-07 15:27:37,262 - INFO -   - 6 Learning Resource Categories
+2025-07-07 15:27:37,263 - INFO - ENDPOINTS: Available endpoints:
+2025-07-07 15:27:37,263 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-07 15:27:37,264 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-07 15:27:37,265 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-07 15:27:37,267 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-07 15:27:37,268 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-07 15:27:37,269 - INFO -   - GET  /health - Health check and feature information
+2025-07-07 15:27:37,270 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-07 15:27:37,382 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-07 15:27:37,385 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-07 15:29:39,224 - INFO - HEALTH: Health check requested
+2025-07-07 15:29:39,226 - INFO - 127.0.0.1 - - [07/Jul/2025 15:29:39] "GET /health HTTP/1.1" 200 -
+2025-07-07 15:29:40,278 - INFO - HEALTH: Health check requested
+2025-07-07 15:29:40,279 - INFO - 127.0.0.1 - - [07/Jul/2025 15:29:40] "GET /health HTTP/1.1" 200 -
+2025-07-07 15:29:41,341 - INFO - HEALTH: Health check requested
+2025-07-07 15:29:41,343 - INFO - 127.0.0.1 - - [07/Jul/2025 15:29:41] "GET /health HTTP/1.1" 200 -
+2025-07-07 15:29:41,449 - INFO - STARTING: [req_1751881481_1951] Starting resume analysis...
+2025-07-07 15:29:41,450 - INFO - RECEIVED: [req_1751881481_1951] Received JSON request with text length: 927
+2025-07-07 15:29:41,451 - INFO - PROCESSING: [req_1751881481_1951] Processing text: Curriculum Vitae
+Name & Contact
+Rahul Sharma
+Email: rahul.sharma@email.com
+Phone: +91-9876543210
+Pro...
+2025-07-07 15:29:41,457 - INFO - ANALYZING: [req_1751881481_1951] Starting analysis pipeline...
+2025-07-07 15:29:41,457 - INFO - ANALYZING: Extracting skills from text...
+2025-07-07 15:29:41,564 - INFO - SUCCESS: Extracted 8 skills: ['data analysis', 'finance', 'git', 'github', 'organization', 'programming', 'sales', 'web development']
+2025-07-07 15:29:41,565 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-07 15:29:41,566 - INFO - SUCCESS: Extracted 0 total years of experience
+2025-07-07 15:29:41,567 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-07 15:29:41,614 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-07 15:29:41,615 - INFO - ANALYZING: Predicting career domains...
+2025-07-07 15:29:41,616 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Data Science', 'Finance']
+2025-07-07 15:29:41,616 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-07 15:29:41,620 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-07 15:29:41,621 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-07 15:29:41,622 - INFO - SUCCESS: Identified personality traits: ['Analytical', 'Adaptable', 'Creative']
+2025-07-07 15:29:41,623 - INFO - ANALYZING: Categorizing skills...
+2025-07-07 15:29:41,623 - INFO - SUCCESS: Categorized skills: 8 total
+2025-07-07 15:29:41,623 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-07 15:29:41,623 - INFO - SUCCESS: Generated 5 learning recommendation sets
+2025-07-07 15:29:41,625 - INFO - ANALYZING: Extracting education information...
+2025-07-07 15:29:41,628 - INFO - SUCCESS: Extracted education info: 0 degrees, 0 institutions
+2025-07-07 15:29:41,644 - INFO - DATABASE: Analysis saved for user b0f5ee84-8147-46ad-a288-04f0bb5104aa
+2025-07-07 15:29:41,645 - INFO - COMPLETED: [req_1751881481_1951] Analysis completed successfully in 178.84ms
+2025-07-07 15:29:41,646 - INFO - RESULTS: [req_1751881481_1951] Results: 8 skills, 3 domains, 3 gaps
+2025-07-07 15:29:41,647 - INFO - 127.0.0.1 - - [07/Jul/2025 15:29:41] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-08 19:06:02,289 - INFO - Loading spaCy model...
+2025-07-08 19:06:04,207 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-08 19:06:04,213 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-08 19:06:04,214 - INFO - DATABASE: Initializing SQLite database...
+2025-07-08 19:06:04,235 - INFO - DATABASE: Database initialized successfully
+2025-07-08 19:06:04,235 - INFO - FEATURES: Enhanced features available:
+2025-07-08 19:06:04,236 - INFO -   - 12 Career Domains
+2025-07-08 19:06:04,237 - INFO -   - 3 Skill Categories
+2025-07-08 19:06:04,237 - INFO -   - 6 Personality Traits
+2025-07-08 19:06:04,238 - INFO -   - 6 Learning Resource Categories
+2025-07-08 19:06:04,239 - INFO - ENDPOINTS: Available endpoints:
+2025-07-08 19:06:04,239 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-08 19:06:04,240 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-08 19:06:04,243 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-08 19:06:04,245 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-08 19:06:04,245 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-08 19:06:04,246 - INFO -   - GET  /health - Health check and feature information
+2025-07-08 19:06:04,247 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-08 19:06:04,354 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-08 19:06:04,357 - INFO - [33mPress CTRL+C to quit[0m

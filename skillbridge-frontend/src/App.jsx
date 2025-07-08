@@ -11,6 +11,7 @@ import Results from './pages/Results';
 import CareerPath from './pages/CareerPath';
 import AIAssistantDashboard from './pages/AIAssistantDashboard';
 import Settings from './pages/Settings';
+import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
 
 function App() {
@@ -25,12 +26,36 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/upload-resume" element={<UploadResume />} />
-                <Route path="/results/:resumeId" element={<Results />} />
-                <Route path="/career-path" element={<CareerPath />} />
-                <Route path="/ai-assistant" element={<AIAssistantDashboard />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/upload-resume" element={
+                  <ProtectedRoute>
+                    <UploadResume />
+                  </ProtectedRoute>
+                } />
+                <Route path="/results/:resumeId" element={
+                  <ProtectedRoute>
+                    <Results />
+                  </ProtectedRoute>
+                } />
+                <Route path="/career-path" element={
+                  <ProtectedRoute>
+                    <CareerPath />
+                  </ProtectedRoute>
+                } />
+                <Route path="/ai-assistant" element={
+                  <ProtectedRoute>
+                    <AIAssistantDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
               </Routes>
             </main>
           </div>
