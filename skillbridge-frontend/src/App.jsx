@@ -12,9 +12,13 @@ import CareerPath from './pages/CareerPath';
 import AIAssistantDashboard from './pages/AIAssistantDashboard';
 import Settings from './pages/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
+import FloatingChatButton from './components/FloatingChatButton';
+import FloatingChatModal from './components/FloatingChatModal';
+import React from 'react';
 import './index.css';
 
 function App() {
+  const [chatOpen, setChatOpen] = React.useState(false);
   return (
     <ThemeProvider>
       <AuthProvider>
@@ -58,6 +62,9 @@ function App() {
                 } />
               </Routes>
             </main>
+            {/* Floating Chat Assistant */}
+            <FloatingChatButton onClick={() => setChatOpen((o) => !o)} isOpen={chatOpen} />
+            <FloatingChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
           </div>
         </Router>
       </AuthProvider>
