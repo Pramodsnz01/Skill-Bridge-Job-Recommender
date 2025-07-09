@@ -1022,16 +1022,14 @@ export default chatService;
 // Function to get chat history (for future implementation)
 export const getChatHistory = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/chat/history`, {
+    const response = await fetch(`${API_BASE_URL}/chat/history`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-    
     if (!response.ok) {
       throw new Error('Failed to fetch chat history');
     }
-    
     return await response.json();
   } catch (error) {
     console.error('Error fetching chat history:', error);
@@ -1039,23 +1037,21 @@ export const getChatHistory = async () => {
   }
 };
 
-// Function to clear chat history (for future implementation)
-export const clearChatHistory = async () => {
+// Function to delete a single chat conversation by ID
+export const deleteChatHistory = async (id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/chat/clear`, {
+    const response = await fetch(`${API_BASE_URL}/chat/history/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-    
     if (!response.ok) {
-      throw new Error('Failed to clear chat history');
+      throw new Error('Failed to delete chat history');
     }
-    
     return await response.json();
   } catch (error) {
-    console.error('Error clearing chat history:', error);
+    console.error('Error deleting chat history:', error);
     throw error;
   }
 };

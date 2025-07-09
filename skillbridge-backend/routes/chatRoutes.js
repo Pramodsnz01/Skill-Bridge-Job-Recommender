@@ -4,8 +4,9 @@ const chatController = require('../controllers/chatController');
 const { auth } = require('../middleware/auth');
 
 // Basic chat routes
-router.post('/send', chatController.sendMessage);
+router.post('/send', auth, chatController.sendMessage);
 router.get('/history', auth, chatController.getChatHistory);
+router.delete('/history/:id', auth, chatController.deleteChatHistory);
 
 // Enhanced features routes
 router.get('/insights/:userId', auth, chatController.getUserInsights);

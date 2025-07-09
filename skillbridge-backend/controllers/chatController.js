@@ -266,7 +266,8 @@ const chatController = {
   async sendMessage(req, res) {
     try {
       const startTime = Date.now();
-      const { message, userId, sessionId, language = 'en' } = req.body;
+      const { message, sessionId, language = 'en' } = req.body;
+      const userId = req.user._id;
       
       if (!message || !message.trim()) {
         return res.status(400).json({ 
@@ -564,6 +565,25 @@ const chatController = {
         success: false, 
         message: 'Internal server error' 
       });
+    }
+  },
+
+  // Delete a single chat history item by ID
+  async deleteChatHistory(req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id;
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Chat ID is required' });
+      }
+      const deleted = await Chat.findOneAndDelete({ _id: id, userId });
+      if (!deleted) {
+        return res.status(404).json({ success: false, message: 'Chat not found or not authorized' });
+      }
+      res.json({ success: true, message: 'Chat deleted successfully' });
+    } catch (error) {
+      console.error('Delete chat history error:', error);
+      res.status(500).json({ success: false, message: 'Failed to delete chat history' });
     }
   }
 };
