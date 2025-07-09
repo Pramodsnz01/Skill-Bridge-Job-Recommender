@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -62,13 +62,22 @@ function App() {
                 } />
               </Routes>
             </main>
-            {/* Floating Chat Assistant */}
-            <FloatingChatButton onClick={() => setChatOpen((o) => !o)} isOpen={chatOpen} />
-            <FloatingChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
+            <FloatingChatComponents chatOpen={chatOpen} setChatOpen={setChatOpen} />
           </div>
         </Router>
       </AuthProvider>
     </ThemeProvider>
+  );
+}
+
+function FloatingChatComponents({ chatOpen, setChatOpen }) {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) return null;
+  return (
+    <>
+      <FloatingChatButton onClick={() => setChatOpen((o) => !o)} isOpen={chatOpen} />
+      <FloatingChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
+    </>
   );
 }
 

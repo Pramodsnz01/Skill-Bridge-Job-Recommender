@@ -1905,3 +1905,81 @@ Pro...
  * Running on http://127.0.0.1:5001
  * Running on http://192.168.18.190:5001
 2025-07-08 19:06:04,357 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-08 19:38:25,718 - INFO - HEALTH: Health check requested
+2025-07-08 19:38:25,720 - INFO - 127.0.0.1 - - [08/Jul/2025 19:38:25] "GET /health HTTP/1.1" 200 -
+2025-07-08 19:38:26,042 - INFO - STARTING: [req_1751982806_9629] Starting resume analysis...
+2025-07-08 19:38:26,043 - INFO - RECEIVED: [req_1751982806_9629] Received JSON request with text length: 972
+2025-07-08 19:38:26,044 - INFO - PROCESSING: [req_1751982806_9629] Processing text: Curriculum Vitae
+Personal Information
+Name: Aayush Karki
+Email: aayush.karki@email.com
+Phone: +977-9...
+2025-07-08 19:38:26,050 - INFO - ANALYZING: [req_1751982806_9629] Starting analysis pipeline...
+2025-07-08 19:38:26,051 - INFO - ANALYZING: Extracting skills from text...
+2025-07-08 19:38:26,175 - INFO - SUCCESS: Extracted 4 skills: ['animation', 'git', 'github', 'web design']
+2025-07-08 19:38:26,175 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-08 19:38:26,180 - INFO - SUCCESS: Extracted 4 total years of experience
+2025-07-08 19:38:26,181 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-08 19:38:26,241 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-08 19:38:26,241 - INFO - ANALYZING: Predicting career domains...
+2025-07-08 19:38:26,243 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Design & Creative', 'Data Science']
+2025-07-08 19:38:26,243 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-08 19:38:26,247 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-08 19:38:26,249 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-08 19:38:26,250 - INFO - SUCCESS: Identified personality traits: ['Creative', 'Collaborative', 'Adaptable']
+2025-07-08 19:38:26,251 - INFO - ANALYZING: Categorizing skills...
+2025-07-08 19:38:26,252 - INFO - SUCCESS: Categorized skills: 4 total
+2025-07-08 19:38:26,253 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-08 19:38:26,254 - INFO - SUCCESS: Generated 3 learning recommendation sets
+2025-07-08 19:38:26,254 - INFO - ANALYZING: Extracting education information...
+2025-07-08 19:38:26,257 - INFO - SUCCESS: Extracted education info: 0 degrees, 1 institutions
+2025-07-08 19:38:26,274 - INFO - DATABASE: Analysis saved for user af8c4082-fb2c-4192-b793-3aa4f7cd14e2
+2025-07-08 19:38:26,275 - INFO - COMPLETED: [req_1751982806_9629] Analysis completed successfully in 216.06ms
+2025-07-08 19:38:26,276 - INFO - RESULTS: [req_1751982806_9629] Results: 4 skills, 3 domains, 3 gaps
+2025-07-08 19:38:26,277 - INFO - 127.0.0.1 - - [08/Jul/2025 19:38:26] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-09 11:03:37,818 - INFO - Loading spaCy model...
+2025-07-09 11:03:40,825 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-09 11:03:40,834 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-09 11:03:40,835 - INFO - DATABASE: Initializing SQLite database...
+2025-07-09 11:03:40,866 - INFO - DATABASE: Database initialized successfully
+2025-07-09 11:03:40,867 - INFO - FEATURES: Enhanced features available:
+2025-07-09 11:03:40,868 - INFO -   - 12 Career Domains
+2025-07-09 11:03:40,869 - INFO -   - 3 Skill Categories
+2025-07-09 11:03:40,870 - INFO -   - 6 Personality Traits
+2025-07-09 11:03:40,871 - INFO -   - 6 Learning Resource Categories
+2025-07-09 11:03:40,871 - INFO - ENDPOINTS: Available endpoints:
+2025-07-09 11:03:40,875 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-09 11:03:40,876 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-09 11:03:40,877 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-09 11:03:40,878 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-09 11:03:40,880 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-09 11:03:40,881 - INFO -   - GET  /health - Health check and feature information
+2025-07-09 11:03:40,883 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-09 11:03:41,082 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.100.170:5001
+2025-07-09 11:03:41,083 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-09 20:51:27,087 - INFO - Loading spaCy model...
+2025-07-09 20:51:28,644 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-09 20:51:28,653 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-09 20:51:28,653 - INFO - DATABASE: Initializing SQLite database...
+2025-07-09 20:51:28,679 - INFO - DATABASE: Database initialized successfully
+2025-07-09 20:51:28,680 - INFO - FEATURES: Enhanced features available:
+2025-07-09 20:51:28,680 - INFO -   - 12 Career Domains
+2025-07-09 20:51:28,681 - INFO -   - 3 Skill Categories
+2025-07-09 20:51:28,681 - INFO -   - 6 Personality Traits
+2025-07-09 20:51:28,681 - INFO -   - 6 Learning Resource Categories
+2025-07-09 20:51:28,682 - INFO - ENDPOINTS: Available endpoints:
+2025-07-09 20:51:28,682 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-09 20:51:28,683 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-09 20:51:28,683 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-09 20:51:28,684 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-09 20:51:28,686 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-09 20:51:28,687 - INFO -   - GET  /health - Health check and feature information
+2025-07-09 20:51:28,688 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-09 20:51:28,778 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-09 20:51:28,778 - INFO - [33mPress CTRL+C to quit[0m
