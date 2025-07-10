@@ -1,7 +1,28 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Logo from './Logo';
+import React, { useState } from 'react';
+import HelpCenter from './HelpCenter';
+import { useAuth } from '../context/AuthContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [helpOpen, setHelpOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChatbotClick = (e) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      navigate('/ai-assistant');
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleHomeClick = (e) => {
+    // Always scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white">
@@ -11,9 +32,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
             <div className="mb-6">
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                SkillBridge
-              </h3>
+              <Logo size="xl" className="mb-2" />
               <p className="text-gray-300 mt-2 text-sm">
                 Bridge Your Skills to Success with AI-powered career guidance and resume analysis.
               </p>
@@ -56,7 +75,11 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-blue-300 mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm">
+                <Link
+                  to="/"
+                  className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm"
+                  onClick={handleHomeClick}
+                >
                   Home
                 </Link>
               </li>
@@ -71,9 +94,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/chatbot" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm">
+                <a
+                  href="/ai-assistant"
+                  className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm cursor-pointer"
+                  onClick={handleChatbotClick}
+                >
                   AI Chatbot
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -88,9 +115,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm">
+                <button
+                  type="button"
+                  className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm w-full text-left focus:outline-none"
+                  onClick={() => setHelpOpen(true)}
+                >
                   Help Center
-                </a>
+                </button>
               </li>
               <li>
                 <a href="#" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm">
@@ -122,8 +153,8 @@ const Footer = () => {
             <div className="text-center md:text-right">
               <p className="text-gray-400 text-sm">
                 Developed with ❤️ by{' '}
-                <span className="text-purple-400 font-semibold">Joc Jayant</span> and{' '}
-                <span className="text-green-400 font-semibold">His Team</span>
+                <span className="text-purple-400 font-semibold">Skillbridge</span>{' '}
+                <span className="text-green-400 font-semibold">Team</span>
               </p>
               <p className="text-gray-500 text-xs mt-1">
                 Six Semester Project • Powered by React, Node.js & AI Technology
@@ -135,6 +166,8 @@ const Footer = () => {
 
       {/* Animated Bottom Border */}
       <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse" />
+      {/* Help Center Modal */}
+      <HelpCenter open={helpOpen} onClose={() => setHelpOpen(false)} />
     </footer>
   );
 };

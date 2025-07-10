@@ -1,7 +1,7 @@
 {
   "name": "skillbridge-backend",
   "version": "1.0.0",
-  "description": "Backend API for SkillBridge application",
+  "description": "Backend API for SkillBridge - AI-powered resume analysis platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,10 +12,13 @@
     "nodejs",
     "express",
     "mongodb",
-    "api"
+    "api",
+    "resume-analysis",
+    "ai",
+    "career-guidance"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Joc Jayant & Team",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "nodemon": "^3.0.2"

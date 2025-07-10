@@ -1983,3 +1983,96 @@ Phone: +977-9...
  * Running on http://127.0.0.1:5001
  * Running on http://192.168.18.190:5001
 2025-07-09 20:51:28,778 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-10 07:29:28,347 - INFO - Loading spaCy model...
+2025-07-10 07:29:29,642 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-10 07:29:29,646 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-10 07:29:29,646 - INFO - DATABASE: Initializing SQLite database...
+2025-07-10 07:29:29,659 - INFO - DATABASE: Database initialized successfully
+2025-07-10 07:29:29,659 - INFO - FEATURES: Enhanced features available:
+2025-07-10 07:29:29,660 - INFO -   - 12 Career Domains
+2025-07-10 07:29:29,660 - INFO -   - 3 Skill Categories
+2025-07-10 07:29:29,661 - INFO -   - 6 Personality Traits
+2025-07-10 07:29:29,661 - INFO -   - 6 Learning Resource Categories
+2025-07-10 07:29:29,662 - INFO - ENDPOINTS: Available endpoints:
+2025-07-10 07:29:29,662 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-10 07:29:29,663 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-10 07:29:29,664 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-10 07:29:29,664 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-10 07:29:29,665 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-10 07:29:29,666 - INFO -   - GET  /health - Health check and feature information
+2025-07-10 07:29:29,668 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-10 07:29:29,731 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://127.0.0.1:5001
+2025-07-10 07:29:29,732 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-10 07:33:46,224 - INFO - HEALTH: Health check requested
+2025-07-10 07:33:46,227 - INFO - 127.0.0.1 - - [10/Jul/2025 07:33:46] "GET /health HTTP/1.1" 200 -
+2025-07-10 07:33:46,626 - INFO - STARTING: [req_1752112126_2658] Starting resume analysis...
+2025-07-10 07:33:46,690 - INFO - RECEIVED: [req_1752112126_2658] Received JSON request with text length: 927
+2025-07-10 07:33:46,741 - INFO - PROCESSING: [req_1752112126_2658] Processing text: Curriculum Vitae
+Name & Contact
+Rahul Sharma
+Email: rahul.sharma@email.com
+Phone: +91-9876543210
+Pro...
+2025-07-10 07:33:46,778 - INFO - ANALYZING: [req_1752112126_2658] Starting analysis pipeline...
+2025-07-10 07:33:46,805 - INFO - ANALYZING: Extracting skills from text...
+2025-07-10 07:33:46,934 - INFO - SUCCESS: Extracted 8 skills: ['data analysis', 'finance', 'git', 'github', 'organization', 'programming', 'sales', 'web development']
+2025-07-10 07:33:46,935 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-10 07:33:46,937 - INFO - SUCCESS: Extracted 0 total years of experience
+2025-07-10 07:33:46,937 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-10 07:33:46,990 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-10 07:33:46,990 - INFO - ANALYZING: Predicting career domains...
+2025-07-10 07:33:46,991 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Data Science', 'Finance']
+2025-07-10 07:33:46,992 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-10 07:33:46,995 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-10 07:33:46,995 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-10 07:33:46,996 - INFO - SUCCESS: Identified personality traits: ['Analytical', 'Adaptable', 'Creative']
+2025-07-10 07:33:46,997 - INFO - ANALYZING: Categorizing skills...
+2025-07-10 07:33:46,998 - INFO - SUCCESS: Categorized skills: 8 total
+2025-07-10 07:33:47,002 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-10 07:33:47,003 - INFO - SUCCESS: Generated 5 learning recommendation sets
+2025-07-10 07:33:47,004 - INFO - ANALYZING: Extracting education information...
+2025-07-10 07:33:47,008 - INFO - SUCCESS: Extracted education info: 0 degrees, 0 institutions
+2025-07-10 07:33:47,031 - INFO - DATABASE: Analysis saved for user 475723d9-ee73-49e7-b642-f8ffda302a80
+2025-07-10 07:33:47,034 - INFO - COMPLETED: [req_1752112126_2658] Analysis completed successfully in 384.00ms
+2025-07-10 07:33:47,035 - INFO - RESULTS: [req_1752112126_2658] Results: 8 skills, 3 domains, 3 gaps
+2025-07-10 07:33:47,037 - INFO - 127.0.0.1 - - [10/Jul/2025 07:33:47] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-10 07:41:09,396 - INFO - HEALTH: Health check requested
+2025-07-10 07:41:09,398 - INFO - 127.0.0.1 - - [10/Jul/2025 07:41:09] "GET /health HTTP/1.1" 200 -
+2025-07-10 07:41:10,434 - INFO - HEALTH: Health check requested
+2025-07-10 07:41:10,441 - INFO - 127.0.0.1 - - [10/Jul/2025 07:41:10] "GET /health HTTP/1.1" 200 -
+2025-07-10 07:41:11,336 - INFO - HEALTH: Health check requested
+2025-07-10 07:41:11,337 - INFO - 127.0.0.1 - - [10/Jul/2025 07:41:11] "GET /health HTTP/1.1" 200 -
+2025-07-10 07:41:11,411 - INFO - STARTING: [req_1752112571_5609] Starting resume analysis...
+2025-07-10 07:41:11,412 - INFO - RECEIVED: [req_1752112571_5609] Received JSON request with text length: 927
+2025-07-10 07:41:11,412 - INFO - PROCESSING: [req_1752112571_5609] Processing text: Curriculum Vitae
+Name & Contact
+Rahul Sharma
+Email: rahul.sharma@email.com
+Phone: +91-9876543210
+Pro...
+2025-07-10 07:41:11,413 - INFO - ANALYZING: [req_1752112571_5609] Starting analysis pipeline...
+2025-07-10 07:41:11,414 - INFO - ANALYZING: Extracting skills from text...
+2025-07-10 07:41:11,481 - INFO - SUCCESS: Extracted 8 skills: ['data analysis', 'finance', 'git', 'github', 'organization', 'programming', 'sales', 'web development']
+2025-07-10 07:41:11,482 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-10 07:41:11,483 - INFO - SUCCESS: Extracted 0 total years of experience
+2025-07-10 07:41:11,483 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-10 07:41:11,538 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-10 07:41:11,539 - INFO - ANALYZING: Predicting career domains...
+2025-07-10 07:41:11,540 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Data Science', 'Finance']
+2025-07-10 07:41:11,540 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-10 07:41:11,543 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-10 07:41:11,543 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-10 07:41:11,544 - INFO - SUCCESS: Identified personality traits: ['Analytical', 'Adaptable', 'Creative']
+2025-07-10 07:41:11,545 - INFO - ANALYZING: Categorizing skills...
+2025-07-10 07:41:11,545 - INFO - SUCCESS: Categorized skills: 8 total
+2025-07-10 07:41:11,546 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-10 07:41:11,547 - INFO - SUCCESS: Generated 5 learning recommendation sets
+2025-07-10 07:41:11,547 - INFO - ANALYZING: Extracting education information...
+2025-07-10 07:41:11,549 - INFO - SUCCESS: Extracted education info: 0 degrees, 0 institutions
+2025-07-10 07:41:11,567 - INFO - DATABASE: Analysis saved for user 28487d53-2d74-4e29-8c54-1a3ee20c11f9
+2025-07-10 07:41:11,570 - INFO - COMPLETED: [req_1752112571_5609] Analysis completed successfully in 138.98ms
+2025-07-10 07:41:11,571 - INFO - RESULTS: [req_1752112571_5609] Results: 8 skills, 3 domains, 3 gaps
+2025-07-10 07:41:11,572 - INFO - 127.0.0.1 - - [10/Jul/2025 07:41:11] "POST /analyze-resume HTTP/1.1" 200 -
