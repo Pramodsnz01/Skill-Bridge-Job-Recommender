@@ -2099,3 +2099,86 @@ Pro...
  * Running on http://127.0.0.1:5001
  * Running on http://192.168.18.190:5001
 2025-07-10 22:00:56,315 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-12 06:47:17,275 - INFO - Loading spaCy model...
+2025-07-12 06:47:19,445 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-12 06:47:19,498 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-12 06:47:19,503 - INFO - DATABASE: Initializing SQLite database...
+2025-07-12 06:47:19,528 - INFO - DATABASE: Database initialized successfully
+2025-07-12 06:47:19,529 - INFO - FEATURES: Enhanced features available:
+2025-07-12 06:47:19,530 - INFO -   - 12 Career Domains
+2025-07-12 06:47:19,530 - INFO -   - 3 Skill Categories
+2025-07-12 06:47:19,531 - INFO -   - 6 Personality Traits
+2025-07-12 06:47:19,531 - INFO -   - 6 Learning Resource Categories
+2025-07-12 06:47:19,532 - INFO - ENDPOINTS: Available endpoints:
+2025-07-12 06:47:19,533 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-12 06:47:19,536 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-12 06:47:19,537 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-12 06:47:19,539 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-12 06:47:19,540 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-12 06:47:19,543 - INFO -   - GET  /health - Health check and feature information
+2025-07-12 06:47:19,545 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-12 06:47:19,606 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-12 06:47:19,609 - INFO - [33mPress CTRL+C to quit[0m
+2025-07-12 07:47:23,434 - INFO - HEALTH: Health check requested
+2025-07-12 07:47:23,480 - INFO - 127.0.0.1 - - [12/Jul/2025 07:47:23] "GET /health HTTP/1.1" 200 -
+2025-07-12 07:47:24,518 - INFO - HEALTH: Health check requested
+2025-07-12 07:47:24,522 - INFO - 127.0.0.1 - - [12/Jul/2025 07:47:24] "GET /health HTTP/1.1" 200 -
+2025-07-12 07:47:25,812 - INFO - HEALTH: Health check requested
+2025-07-12 07:47:25,816 - INFO - 127.0.0.1 - - [12/Jul/2025 07:47:25] "GET /health HTTP/1.1" 200 -
+2025-07-12 07:47:25,948 - INFO - STARTING: [req_1752285745_6194] Starting resume analysis...
+2025-07-12 07:47:25,968 - INFO - RECEIVED: [req_1752285745_6194] Received JSON request with text length: 927
+2025-07-12 07:47:25,969 - INFO - PROCESSING: [req_1752285745_6194] Processing text: Curriculum Vitae
+Name & Contact
+Rahul Sharma
+Email: rahul.sharma@email.com
+Phone: +91-9876543210
+Pro...
+2025-07-12 07:47:25,971 - INFO - ANALYZING: [req_1752285745_6194] Starting analysis pipeline...
+2025-07-12 07:47:25,971 - INFO - ANALYZING: Extracting skills from text...
+2025-07-12 07:47:26,573 - INFO - SUCCESS: Extracted 8 skills: ['data analysis', 'finance', 'git', 'github', 'organization', 'programming', 'sales', 'web development']
+2025-07-12 07:47:26,574 - INFO - ANALYZING: Extracting experience years from text...
+2025-07-12 07:47:26,581 - INFO - SUCCESS: Extracted 0 total years of experience
+2025-07-12 07:47:26,581 - INFO - ANALYZING: Extracting keywords from text...
+2025-07-12 07:47:26,660 - INFO - SUCCESS: Extracted 20 keywords
+2025-07-12 07:47:26,660 - INFO - ANALYZING: Predicting career domains...
+2025-07-12 07:47:26,665 - INFO - SUCCESS: Predicted career domains: ['Software Development', 'Data Science', 'Finance']
+2025-07-12 07:47:26,666 - INFO - ANALYZING: Identifying learning gaps...
+2025-07-12 07:47:26,669 - INFO - SUCCESS: Identified 3 learning gaps
+2025-07-12 07:47:26,670 - INFO - ANALYZING: Analyzing personality traits...
+2025-07-12 07:47:26,672 - INFO - SUCCESS: Identified personality traits: ['Analytical', 'Adaptable', 'Creative']
+2025-07-12 07:47:26,672 - INFO - ANALYZING: Categorizing skills...
+2025-07-12 07:47:26,674 - INFO - SUCCESS: Categorized skills: 8 total
+2025-07-12 07:47:26,674 - INFO - ANALYZING: Generating learning recommendations...
+2025-07-12 07:47:26,675 - INFO - SUCCESS: Generated 5 learning recommendation sets
+2025-07-12 07:47:26,676 - INFO - ANALYZING: Extracting education information...
+2025-07-12 07:47:26,686 - INFO - SUCCESS: Extracted education info: 0 degrees, 0 institutions
+2025-07-12 07:47:26,728 - INFO - DATABASE: Analysis saved for user 6dcfcbe4-bd53-4b60-a187-e8453eb83cc7
+2025-07-12 07:47:26,730 - INFO - COMPLETED: [req_1752285745_6194] Analysis completed successfully in 739.00ms
+2025-07-12 07:47:26,730 - INFO - RESULTS: [req_1752285745_6194] Results: 8 skills, 3 domains, 3 gaps
+2025-07-12 07:47:26,733 - INFO - 127.0.0.1 - - [12/Jul/2025 07:47:26] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-12 13:42:35,389 - INFO - Loading spaCy model...
+2025-07-12 13:42:36,672 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-12 13:42:36,677 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-12 13:42:36,677 - INFO - DATABASE: Initializing SQLite database...
+2025-07-12 13:42:36,692 - INFO - DATABASE: Database initialized successfully
+2025-07-12 13:42:36,693 - INFO - FEATURES: Enhanced features available:
+2025-07-12 13:42:36,693 - INFO -   - 12 Career Domains
+2025-07-12 13:42:36,693 - INFO -   - 3 Skill Categories
+2025-07-12 13:42:36,694 - INFO -   - 6 Personality Traits
+2025-07-12 13:42:36,694 - INFO -   - 6 Learning Resource Categories
+2025-07-12 13:42:36,694 - INFO - ENDPOINTS: Available endpoints:
+2025-07-12 13:42:36,695 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-12 13:42:36,696 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-12 13:42:36,697 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-12 13:42:36,697 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-12 13:42:36,698 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-12 13:42:36,699 - INFO -   - GET  /health - Health check and feature information
+2025-07-12 13:42:36,700 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-12 13:42:36,807 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-12 13:42:36,808 - INFO - [33mPress CTRL+C to quit[0m

@@ -141,4 +141,14 @@ export const deleteAccount = async (password) => {
         console.error('Delete account error:', error);
         throw error;
     }
+};
+
+// Export all functions as authService object
+export const authService = {
+    registerUser,
+    loginUser,
+    getCurrentUser,
+    logoutUser,
+    changePassword,
+    deleteAccount
 }; 

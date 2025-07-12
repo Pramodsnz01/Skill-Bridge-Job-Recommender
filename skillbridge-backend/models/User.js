@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
         default: 'user'
     },
     
+
+    
     // Profile fields
     firstName: {
         type: String,
@@ -165,5 +167,7 @@ userSchema.methods.toJSON = function() {
     delete user.password;
     return user;
 };
+
+
 
 module.exports = mongoose.model('User', userSchema); 
