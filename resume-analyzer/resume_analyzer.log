@@ -2076,3 +2076,26 @@ Pro...
 2025-07-10 07:41:11,570 - INFO - COMPLETED: [req_1752112571_5609] Analysis completed successfully in 138.98ms
 2025-07-10 07:41:11,571 - INFO - RESULTS: [req_1752112571_5609] Results: 8 skills, 3 domains, 3 gaps
 2025-07-10 07:41:11,572 - INFO - 127.0.0.1 - - [10/Jul/2025 07:41:11] "POST /analyze-resume HTTP/1.1" 200 -
+2025-07-10 22:00:50,134 - INFO - Loading spaCy model...
+2025-07-10 22:00:56,052 - INFO - SUCCESS: spaCy model loaded successfully
+2025-07-10 22:00:56,065 - INFO - STARTING: Starting Enhanced Resume Analyzer API...
+2025-07-10 22:00:56,066 - INFO - DATABASE: Initializing SQLite database...
+2025-07-10 22:00:56,105 - INFO - DATABASE: Database initialized successfully
+2025-07-10 22:00:56,111 - INFO - FEATURES: Enhanced features available:
+2025-07-10 22:00:56,111 - INFO -   - 12 Career Domains
+2025-07-10 22:00:56,112 - INFO -   - 3 Skill Categories
+2025-07-10 22:00:56,115 - INFO -   - 6 Personality Traits
+2025-07-10 22:00:56,116 - INFO -   - 6 Learning Resource Categories
+2025-07-10 22:00:56,117 - INFO - ENDPOINTS: Available endpoints:
+2025-07-10 22:00:56,118 - INFO -   - POST /analyze-resume - Enhanced resume analysis with personality, skills categorization, and learning recommendations
+2025-07-10 22:00:56,119 - INFO -   - POST /skill-analysis - Detailed skill analysis and categorization
+2025-07-10 22:00:56,120 - INFO -   - GET  /history - Get analysis history for a user
+2025-07-10 22:00:56,124 - INFO -   - GET  /user-stats - Get user statistics
+2025-07-10 22:00:56,125 - INFO -   - POST /generate-session - Generate new session ID
+2025-07-10 22:00:56,135 - INFO -   - GET  /health - Health check and feature information
+2025-07-10 22:00:56,145 - INFO -   - GET  /dashboard - User dashboard analytics
+2025-07-10 22:00:56,309 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.18.190:5001
+2025-07-10 22:00:56,315 - INFO - [33mPress CTRL+C to quit[0m
