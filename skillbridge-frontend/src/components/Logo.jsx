@@ -16,7 +16,7 @@ const Logo = ({ size = 'md', showText = true, className = '' }) => {
   };
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
+    <div className={`flex items-center space-x-1 ${className}`}>
       {/* Logo Icon: exact SVG from uploaded icon */}
       <div className={`${sizeClasses[size]} flex-shrink-0`}>
         <svg width="53" height="68" viewBox="0 0 53 68" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -26,7 +26,9 @@ const Logo = ({ size = 'md', showText = true, className = '' }) => {
       </div>
       {/* Logo Text */}
       {showText && (
-        <span className={`font-bold text-[#7F1DFF] dark:text-[#B983FF] ${textSizes[size]}`}>
+        <span className={`font-bold text-[#7F1DFF] dark:text-[#B983FF] ${textSizes[size]}`}
+          style={{ fontFamily: "'Pacifico', cursive" }}
+        >
           SkillBridge
         </span>
       )}

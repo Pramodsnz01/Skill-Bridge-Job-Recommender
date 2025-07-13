@@ -37,69 +37,53 @@ const Navbar = () => {
   const navItems = isAuthenticated ? authenticatedNavItems : publicNavItems;
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <Logo size="lg" />
-            </Link>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+    <nav className="bg-[#232b39] shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <Logo size="lg" showText={true} />
+          </Link>
+          {/* Menu */}
+          <div className="hidden md:flex items-center gap-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.path)
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
+                className={`relative px-3 py-2 text-base font-medium outline-none transition-all duration-200
+                  ${isActive(item.path)
+                    ? 'text-purple-400 after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5 after:bg-purple-400 after:rounded after:content-[\'\']'
+                    : 'text-white hover:text-purple-300'}
+                `}
+                tabIndex={0}
+                style={{ whiteSpace: 'nowrap' }}
               >
                 {item.name}
               </Link>
             ))}
-            
-            {/* Theme Toggle */}
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              
-              {isAuthenticated && (
-                <>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Welcome, {user?.name || 'User'}
-                  </span>
-                  <button
-                    onClick={handleLogout}
-                    className="px-3 py-2 rounded-md text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
-                  >
-                    Logout
-                  </button>
-                </>
-              )}
-            </div>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
+          {/* Right side */}
+          <div className="flex items-center gap-4 ml-8">
             <ThemeToggle />
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:ring-blue-400"
-            >
-              <span className="sr-only">Open main menu</span>
-              {!isOpen ? (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              ) : (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              )}
-            </button>
+            {isAuthenticated && (
+              <>
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-full bg-purple-400 flex items-center justify-center text-white font-bold text-base">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </span>
+                  <span className="text-white text-sm font-medium">
+                    Welcome, <span className="font-semibold">{user?.name || 'User'}</span>
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-1.5 rounded-full bg-red-500 text-white font-medium shadow hover:bg-red-600 transition"
+                  style={{ fontSize: '0.95rem' }}
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
