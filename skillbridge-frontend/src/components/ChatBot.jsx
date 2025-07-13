@@ -316,11 +316,11 @@ const ChatBot = ({ userId, experienceLevel = 'entry' }) => {
       )}
 
       {/* Suggestions */}
-      {messages.length > 1 && messages[messages.length - 1]?.suggestions?.length > 0 && (
+      {messages.length === 1 && messages[0]?.suggestions?.length > 0 && (
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200/50 dark:border-gray-700/50 p-4">
           <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Suggested follow-ups:</h4>
           <div className="flex flex-wrap gap-2">
-            {messages[messages.length - 1].suggestions.map((suggestion, index) => (
+            {messages[0].suggestions.map((suggestion, index) => (
               <button
                 key={index}
                 onClick={() => handleSuggestionClick(suggestion)}
