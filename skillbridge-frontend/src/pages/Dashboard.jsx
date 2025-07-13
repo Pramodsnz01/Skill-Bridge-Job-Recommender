@@ -10,7 +10,8 @@ import {
   getCareerDomainsSummary,
   deleteAnalysis,
   exportAnalysisPDF,
-  getLatestAnalysisForUser
+  getLatestAnalysisForUser,
+  getAnalysisByResumeId
 } from '../services/dashboardService';
 import Toast from '../components/Toast';
 import {
@@ -37,12 +38,14 @@ const Dashboard = () => {
   const [skillsSummary, setSkillsSummary] = useState(null);
   const [careerDomains, setCareerDomains] = useState(null);
   const [latestAnalysis, setLatestAnalysis] = useState(null);
+  const [selectedAnalysis, setSelectedAnalysis] = useState(null);
   
   // UI state
   const [showCharts, setShowCharts] = useState(true);
   const [deletingAnalysis, setDeletingAnalysis] = useState(null);
   const [exportingAnalysis, setExportingAnalysis] = useState(null);
   const [toast, setToast] = useState(null);
+  const [loadingAnalysis, setLoadingAnalysis] = useState(false);
 
   // Color palette for charts
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658'];
@@ -167,6 +170,35 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Failed to fetch latest analysis:', err);
       setLatestAnalysis(null);
+    }
+  };
+
+  const handleAnalysisClick = async (analysis) => {
+    try {
+      setLoadingAnalysis(true);
+      console.log('Analysis data:', analysis);
+      const resumeId = analysis.resume;
+      
+      if (!resumeId) {
+        showToast('Resume ID not found for this analysis', 'error');
+        return;
+      }
+
+      console.log('Resume ID:', resumeId);
+      const response = await getAnalysisByResumeId(resumeId);
+      console.log('Analysis response:', response);
+      
+      if (response.success && response.data) {
+        setSelectedAnalysis(response.data);
+        showToast(`Loaded analysis for ${analysis.analysis?.resume?.originalName || analysis.analysis?.resume?.filename || 'Resume'}`, 'success');
+      } else {
+        showToast('Failed to load analysis data', 'error');
+      }
+    } catch (err) {
+      console.error('Error loading analysis:', err);
+      showToast('Failed to load analysis data', 'error');
+    } finally {
+      setLoadingAnalysis(false);
     }
   };
 
@@ -565,11 +597,31 @@ const Dashboard = () => {
               ) : (
                 <div className="space-y-4">
                   {recentAnalyses.map((analysis) => (
-                    <div key={analysis._id} className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0 p-4 border border-gray-100 dark:border-gray-700 rounded-lg transition-all duration-300 hover:shadow-md dark:hover:shadow-gray-800/50">
+                    <div 
+                      key={analysis._id} 
+                      className={`flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0 p-4 border border-gray-100 dark:border-gray-700 rounded-lg transition-all duration-300 hover:shadow-md dark:hover:shadow-gray-800/50 cursor-pointer ${
+                        selectedAnalysis && selectedAnalysis._id === analysis.analysis?._id 
+                          ? 'border-blue-300 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20' 
+                          : 'hover:border-blue-300 dark:hover:border-blue-600'
+                      }`}
+                      onClick={() => handleAnalysisClick(analysis)}
+                    >
                       {/* Icon */}
                       <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center transition-colors duration-300">
-                          <span className="text-blue-600 dark:text-blue-400 text-lg">📊</span>
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
+                          selectedAnalysis && selectedAnalysis._id === analysis.analysis?._id
+                            ? 'bg-blue-500 dark:bg-blue-600'
+                            : 'bg-blue-100 dark:bg-blue-900/20'
+                        }`}>
+                          {loadingAnalysis && selectedAnalysis && selectedAnalysis._id === analysis.analysis?._id ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          ) : (
+                            <span className={`text-lg ${
+                              selectedAnalysis && selectedAnalysis._id === analysis.analysis?._id
+                                ? 'text-white'
+                                : 'text-blue-600 dark:text-blue-400'
+                            }`}>📊</span>
+                          )}
                         </div>
                       </div>
                       {/* Info */}
@@ -582,6 +634,11 @@ const Dashboard = () => {
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-0 ${getStatusColor(analysis.analysis?.status)}`}>
                             {analysis.analysis?.status || 'Unknown'}
                           </span>
+                          {loadingAnalysis && selectedAnalysis && selectedAnalysis._id === analysis.analysis?._id && (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-200">
+                              Loading...
+                            </span>
+                          )}
                         </div>
                         {/* Second row: date, skills, gaps (stacked and centered on mobile) */}
                         <div className="flex flex-col items-center sm:flex-row sm:items-center sm:space-x-4 gap-0.5">
@@ -603,7 +660,10 @@ const Dashboard = () => {
                       {/* Delete Button */}
                       <div className="flex-shrink-0 flex items-center justify-center w-full sm:w-auto mt-3 sm:mt-0">
                         <button
-                          onClick={() => handleDeleteAnalysis(analysis._id)}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent triggering the parent click
+                            handleDeleteAnalysis(analysis._id);
+                          }}
                           disabled={deletingAnalysis === analysis._id}
                           className="btn-sm btn-danger w-full sm:w-auto"
                         >
@@ -619,34 +679,59 @@ const Dashboard = () => {
         </div>
 
         {/* Actionable Insights and Skill Gaps by Domain Section */}
-        {latestAnalysis && latestAnalysis.learningGaps && latestAnalysis.learningGaps.length > 0 && (
+        {(selectedAnalysis || latestAnalysis) && (selectedAnalysis?.learningGaps || latestAnalysis?.learningGaps) && (selectedAnalysis?.learningGaps?.length > 0 || latestAnalysis?.learningGaps?.length > 0) && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 mt-8">
             <div className="card p-6">
               <ActionableInsights />
             </div>
             <div className="card p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-                Skill Gaps by Domain
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={getSkillGapsByDomainData(latestAnalysis.learningGaps)}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="domain" stroke="#6B7280" fontSize={12} />
-                  <YAxis stroke="#6B7280" fontSize={12} />
-                  <Tooltip 
-                    contentStyle={{
-                      backgroundColor: '#1F2937',
-                      border: '1px solid #374151',
-                      borderRadius: '8px',
-                      color: '#F9FAFB'
-                    }}
-                  />
-                  <Bar dataKey="totalGaps" fill="#3B82F6" />
-                  <Bar dataKey="highPriority" fill="#FFBB28" />
-                  <Bar dataKey="mediumPriority" fill="#FF8042" />
-                  <Bar dataKey="lowPriority" fill="#8884D8" />
-                </BarChart>
-              </ResponsiveContainer>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300">
+                  Skill Gaps by Domain
+                </h3>
+                {selectedAnalysis && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">Showing:</span>
+                    <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      {selectedAnalysis.resume?.originalName || selectedAnalysis.resume?.filename || 'Selected Resume'}
+                    </span>
+                    <button
+                      onClick={() => setSelectedAnalysis(null)}
+                      className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+                    >
+                      (Reset)
+                    </button>
+                  </div>
+                )}
+              </div>
+              {loadingAnalysis ? (
+                <div className="flex items-center justify-center h-[300px]">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Loading analysis...</p>
+                  </div>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={getSkillGapsByDomainData((selectedAnalysis || latestAnalysis).learningGaps)}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis dataKey="domain" stroke="#6B7280" fontSize={12} />
+                    <YAxis stroke="#6B7280" fontSize={12} />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: '#1F2937',
+                        border: '1px solid #374151',
+                        borderRadius: '8px',
+                        color: '#F9FAFB'
+                      }}
+                    />
+                    <Bar dataKey="totalGaps" fill="#3B82F6" />
+                    <Bar dataKey="highPriority" fill="#FFBB28" />
+                    <Bar dataKey="mediumPriority" fill="#FF8042" />
+                    <Bar dataKey="lowPriority" fill="#8884D8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </div>
         )}

@@ -154,3 +154,15 @@ export const getLatestAnalysisForUser = async () => {
         throw error;
     }
 }; 
+
+// Get analysis by resume ID for dynamic chart updates
+export const getAnalysisByResumeId = async (resumeId) => {
+    try {
+        const authInstance = createAuthInstance();
+        const response = await authInstance.get(`/analyze/resume/${resumeId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching analysis by resume ID:', error);
+        throw error;
+    }
+}; 
