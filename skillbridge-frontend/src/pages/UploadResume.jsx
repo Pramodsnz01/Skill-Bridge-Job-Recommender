@@ -141,10 +141,8 @@ const UploadResume = () => {
       if (response.success && response.data) {
         setUploadedResume(response.data);
         setFile(null); // Clear the selected file
-        // Automatically trigger analysis after upload
-        setTimeout(() => {
-          handleAnalyze();
-        }, 500); // slight delay to ensure state updates
+        // Call analyze directly with the new uploaded resume data
+        handleAnalyze(response.data);
       } else {
         throw new Error(response.message || 'Server failed to process the upload.');
       }
@@ -161,18 +159,19 @@ const UploadResume = () => {
     }
   };
 
-  const handleAnalyze = async () => {
-    if (!uploadedResume?._id) {
+  // Accept resume as an argument, fallback to uploadedResume state
+  const handleAnalyze = async (resume = uploadedResume) => {
+    if (!resume?._id) {
       setError('No uploaded resume found to analyze.');
       return;
     }
 
     setError('');
     setIsAnalyzing(true);
-    console.log('🔍 Starting analysis for resume:', uploadedResume._id);
+    console.log('🔍 Starting analysis for resume:', resume._id);
     
     try {
-      await analyzeResumeWithProgress(uploadedResume._id, (status, data, errorMsg) => {
+      await analyzeResumeWithProgress(resume._id, (status, data, errorMsg) => {
         console.log('📊 Analysis progress:', { status, hasData: !!data, errorMsg });
         switch (status) {
           case 'processing':
@@ -182,7 +181,7 @@ const UploadResume = () => {
             setAnalysisMessage('Analysis complete! Redirecting...');
             triggerRefresh();
             setTimeout(() => {
-              navigate(`/results/${uploadedResume._id}`);
+              navigate(`/results/${resume._id}`);
             }, 1500);
             break;
           case 'failed':

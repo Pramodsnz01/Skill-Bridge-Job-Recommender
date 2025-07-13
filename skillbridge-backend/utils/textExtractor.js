@@ -79,6 +79,33 @@ const extractTextFromPDF = async (filePath) => {
             throw new Error('PDF file is too large (max 10MB)');
         }
 
+        // --- Pre-check for text-based content using pdfjs-dist (if available) ---
+        // This is a lightweight check to see if the PDF has any text objects before full parsing
+        try {
+            const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+            const dataBuffer = fs.readFileSync(filePath);
+            const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
+            const pdfDocument = await loadingTask.promise;
+            let hasText = false;
+            for (let i = 1; i <= Math.min(pdfDocument.numPages, 3); i++) { // Check first 3 pages
+                const page = await pdfDocument.getPage(i);
+                const textContent = await page.getTextContent();
+                if (textContent.items && textContent.items.length > 0) {
+                    hasText = true;
+                    break;
+                }
+            }
+            if (!hasText) {
+                throw new Error('No selectable text found in PDF. This file appears to be a scan or image. Please upload a text-based PDF (not a scanned image). If you only have a scan, use OCR software to convert it to text.');
+            }
+        } catch (preCheckErr) {
+            // If pdfjs-dist is not installed, skip this check (optional dependency)
+            if (preCheckErr.code !== 'MODULE_NOT_FOUND') {
+                console.warn('PDF pre-check warning:', preCheckErr.message);
+                // If the pre-check fails for other reasons, continue to pdf-parse
+            }
+        }
+
         // Read the PDF file
         const dataBuffer = fs.readFileSync(filePath);
         
@@ -103,16 +130,18 @@ const extractTextFromPDF = async (filePath) => {
         console.error('Error extracting text from PDF:', error);
         
         // Provide specific error messages for common issues
-        if (error.message.includes('bad XRef entry')) {
-            throw new Error('PDF file is corrupted or has an invalid structure. Please try uploading a different PDF file.');
+        if (error.message.includes('No selectable text found')) {
+            throw new Error(error.message + ' If you are sure your file is text-based, try re-saving it using a PDF editor or "Print to PDF" feature.');
+        } else if (error.message.includes('bad XRef entry')) {
+            throw new Error('PDF file is corrupted or has an invalid structure. Please try re-saving your PDF using a PDF editor or the "Print to PDF" feature, or upload a different PDF file.');
         } else if (error.message.includes('Invalid PDF')) {
-            throw new Error('Invalid PDF format. Please ensure the file is a valid PDF document.');
+            throw new Error('Invalid PDF format. Please ensure the file is a valid PDF document. Try re-saving it using a PDF editor.');
         } else if (error.message.includes('Password')) {
             throw new Error('PDF is password protected. Please remove the password and try again.');
         } else if (error.message.includes('No text content')) {
-            throw new Error('PDF appears to be an image or scanned document. Please upload a text-based PDF or convert scanned documents to text.');
+            throw new Error('PDF appears to be an image or scanned document. Please upload a text-based PDF or convert scanned documents to text using OCR.');
         } else {
-            throw new Error(`Failed to extract text from PDF: ${error.message}`);
+            throw new Error(`Failed to extract text from PDF: ${error.message} If you are sure your file is a valid PDF, try re-saving it using a PDF editor or "Print to PDF" feature, or upload a different file.`);
         }
     }
 };
