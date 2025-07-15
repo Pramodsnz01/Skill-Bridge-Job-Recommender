@@ -117,19 +117,19 @@ const Settings = () => {
     console.log('Settings component mounted');
     loadUserProfile();
     loadActivityLogs();
-    
-    let timeoutId;
-    if (loading) {
-      timeoutId = setTimeout(() => {
-        if (loading) {
-          setError('Loading timeout. Please check your connection and try again.');
-          setLoading(false);
-        }
-      }, 30000);
-    }
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
+    // Removed timeout logic for loading
+    // let timeoutId;
+    // if (loading) {
+    //   timeoutId = setTimeout(() => {
+    //     if (loading) {
+    //       setError('Loading timeout. Please check your connection and try again.');
+    //       setLoading(false);
+    //     }
+    //   }, 30000);
+    // }
+    // return () => {
+    //   if (timeoutId) clearTimeout(timeoutId);
+    // };
   }, []);
 
   // Remove auto-save functionality: delete the useEffect that calls handleSaveProfile automatically
