@@ -16,6 +16,8 @@ import FloatingChatButton from './components/FloatingChatButton';
 import FloatingChatModal from './components/FloatingChatModal';
 import React from 'react';
 import './index.css';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
 
 function App() {
   const [chatOpen, setChatOpen] = React.useState(false);
@@ -60,6 +62,8 @@ function App() {
                     <Settings />
                   </ProtectedRoute>
                 } />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<Terms />} />
               </Routes>
             </main>
             <FloatingChatComponents chatOpen={chatOpen} setChatOpen={setChatOpen} />
