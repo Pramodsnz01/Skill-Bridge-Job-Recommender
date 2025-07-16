@@ -1,4 +1,4 @@
-gitconst AnalysisHistory = require('../models/AnalysisHistory');
+const AnalysisHistory = require('../models/AnalysisHistory');
 const Analysis = require('../models/Analysis');
 
 // Get dashboard analytics for a user
