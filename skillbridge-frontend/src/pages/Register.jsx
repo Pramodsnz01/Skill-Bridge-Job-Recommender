@@ -54,9 +54,13 @@ const Register = () => {
     const newErrors = {};
     if (!formData.firstName.trim() || formData.firstName.trim().length < 2) {
       newErrors.firstName = 'First name must be at least 2 characters';
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.firstName.trim())) {
+      newErrors.firstName = 'First name can only contain letters and spaces';
     }
     if (!formData.lastName.trim() || formData.lastName.trim().length < 2) {
       newErrors.lastName = 'Last name must be at least 2 characters';
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.lastName.trim())) {
+      newErrors.lastName = 'Last name can only contain letters and spaces';
     }
     if (!formData.email) {
       newErrors.email = 'Email is required';
